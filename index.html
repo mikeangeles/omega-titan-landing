@@ -1244,5 +1244,500 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 </script>
 
+<!-- ═══════════════════════════════════════════════════════════════
+     OMEGA TITAN SUPPORT BOT — Self-contained AI Knowledge Base
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ─── Chat Widget ─── */
+.chat-fab {
+    position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+    width: 62px; height: 62px; border-radius: 50%;
+    background: var(--gradient-hero);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 30px rgba(59,130,246,0.4);
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s;
+}
+.chat-fab:hover { transform: scale(1.08); box-shadow: 0 8px 40px rgba(59,130,246,0.5); }
+.chat-fab svg { width: 28px; height: 28px; fill: white; transition: transform 0.3s, opacity 0.2s; }
+.chat-fab .icon-close { position: absolute; opacity: 0; transform: rotate(-90deg) scale(0.5); }
+.chat-fab.open .icon-chat { opacity: 0; transform: rotate(90deg) scale(0.5); }
+.chat-fab.open .icon-close { opacity: 1; transform: rotate(0) scale(1); }
+.chat-fab-badge {
+    position: absolute; top: -2px; right: -2px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent-green); border: 2px solid var(--bg-primary);
+    font-size: 0; display: flex; align-items: center; justify-content: center;
+    animation: badge-pulse 2s infinite;
+}
+@keyframes badge-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,230,138,0.4)} 50%{box-shadow:0 0 0 6px rgba(0,230,138,0)} }
+
+.chat-window {
+    position: fixed; bottom: 104px; right: 28px; z-index: 9998;
+    width: 400px; max-width: calc(100vw - 32px);
+    height: 560px; max-height: calc(100vh - 140px);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+    transform: translateY(20px) scale(0.95);
+    opacity: 0; pointer-events: none;
+    transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.chat-window.open {
+    transform: translateY(0) scale(1);
+    opacity: 1; pointer-events: all;
+}
+
+.chat-header {
+    padding: 1.1rem 1.4rem;
+    background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08));
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: center; gap: 0.8rem;
+}
+.chat-avatar {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--gradient-hero);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 900; color: white;
+    letter-spacing: 1px;
+}
+.chat-header-info h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 1px; }
+.chat-header-info p { font-size: 0.72rem; color: var(--accent-green); display: flex; align-items: center; gap: 4px; }
+.chat-header-info p::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-green); display: inline-block;
+}
+
+.chat-messages {
+    flex: 1; overflow-y: auto; padding: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.8rem;
+    scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+
+.msg { max-width: 85%; animation: msgIn 0.3s ease; }
+@keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.msg-bot { align-self: flex-start; }
+.msg-user { align-self: flex-end; }
+.msg-bubble {
+    padding: 0.75rem 1rem;
+    border-radius: 16px;
+    font-size: 0.85rem; line-height: 1.6;
+}
+.msg-bot .msg-bubble {
+    background: var(--bg-card); border: 1px solid rgba(255,255,255,0.04);
+    border-bottom-left-radius: 6px; color: var(--text-secondary);
+}
+.msg-user .msg-bubble {
+    background: linear-gradient(135deg, #3b82f6, #7c3aed);
+    border-bottom-right-radius: 6px; color: white;
+}
+.msg-bot .msg-bubble a { color: var(--accent-cyan); text-decoration: underline; }
+.msg-bot .msg-bubble code {
+    background: rgba(255,255,255,0.06); padding: 0.15rem 0.4rem;
+    border-radius: 4px; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+}
+.msg-bot .msg-bubble strong { color: var(--text-primary); }
+
+.msg-time { font-size: 0.65rem; color: var(--text-muted); margin-top: 3px; padding: 0 4px; }
+.msg-user .msg-time { text-align: right; }
+
+/* Typing indicator */
+.typing-indicator { display: flex; gap: 4px; padding: 0.75rem 1rem; }
+.typing-indicator span {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--text-muted); opacity: 0.5;
+    animation: typingBounce 1.4s infinite ease-in-out;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-6px);opacity:1} }
+
+/* Quick replies */
+.quick-replies { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.quick-btn {
+    padding: 0.4rem 0.85rem;
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 100px; color: var(--accent-blue);
+    font-size: 0.78rem; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
+}
+.quick-btn:hover { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); }
+
+.chat-input-wrap {
+    padding: 0.8rem 1rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    display: flex; gap: 0.6rem; align-items: center;
+    background: rgba(0,0,0,0.15);
+}
+.chat-input {
+    flex: 1; padding: 0.7rem 1rem;
+    background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; color: var(--text-primary);
+    font-size: 0.85rem; font-family: 'Inter', sans-serif;
+    outline: none; transition: border-color 0.3s;
+}
+.chat-input::placeholder { color: var(--text-muted); }
+.chat-input:focus { border-color: rgba(59,130,246,0.3); }
+.chat-send {
+    width: 40px; height: 40px; min-width: 40px;
+    border-radius: 12px; border: none;
+    background: var(--gradient-hero);
+    cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+    transition: transform 0.2s, opacity 0.2s;
+    opacity: 0.7;
+}
+.chat-send:hover { transform: scale(1.05); opacity: 1; }
+.chat-send svg { width: 18px; height: 18px; fill: white; }
+
+@media (max-width: 480px) {
+    .chat-window { right: 0; bottom: 0; width: 100%; max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
+    .chat-fab { bottom: 20px; right: 20px; }
+}
+</style>
+
+<!-- Chat FAB Button -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()">
+    <svg class="icon-chat" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    <div class="chat-fab-badge" id="chatBadge"></div>
+</button>
+
+<!-- Chat Window -->
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <div class="chat-avatar">OT</div>
+        <div class="chat-header-info">
+            <h4>Omega Titan Support</h4>
+            <p>Online &mdash; typically replies instantly</p>
+        </div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-wrap">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about installation, pricing, setup..." autocomplete="off">
+        <button class="chat-send" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// OMEGA TITAN SUPPORT BOT — Knowledge Engine
+// ═══════════════════════════════════════════════════════════════
+
+const KNOWLEDGE_BASE = [
+    {
+        keywords: ['hello', 'hi', 'hey', 'sup', 'good morning', 'good evening', 'howdy', 'greetings'],
+        response: "Hey there! Welcome to Omega Titan. I'm your support assistant and I know this system inside and out. How can I help you today?",
+        quickReplies: ['How does it work?', 'Pricing plans', 'Installation guide', 'VPS requirements']
+    },
+    {
+        keywords: ['what is omega', 'what does omega', 'tell me about', 'explain omega', 'what is this', 'overview'],
+        response: "Omega Titan is an <strong>autonomous algorithmic forex trading system</strong> with 7 independent engines. Unlike typical bots that use RSI/MACD crossovers, our engines are powered by:\n\n• <strong>Swarm Intelligence</strong> (HYDRA)\n• <strong>Seismic Wave Analysis</strong> (SEISMIC)\n• <strong>Computational Immunology</strong> (IMMUNO)\n• <strong>Wave Mechanics</strong> (CASCADE)\n• <strong>Smart Money Confluence</strong>\n• <strong>Momentum Detection</strong> (PULSE + BB)\n\nIt runs 24/5 on a VPS, connects to OANDA, and handles analysis, entries, trade management, and exits autonomously.",
+        quickReplies: ['How to install?', 'Pricing', 'Which pairs?']
+    },
+    {
+        keywords: ['how does it work', 'how it works', 'explain how', 'process', 'workflow'],
+        response: "Here's how Omega Titan works:\n\n<strong>1. Deploy</strong> — Upload to your VPS (we help with setup)\n<strong>2. License</strong> — Activate your hardware-locked license key\n<strong>3. Connect</strong> — Add your OANDA API credentials\n<strong>4. Run</strong> — The bot starts analyzing markets across 4 pairs\n\nEvery potential trade passes through <strong>13+ sequential filters</strong> (session, regime, entropy, bias, structure, scoring, risk) before execution. Multiple engines must agree before any trade is taken.",
+        quickReplies: ['VPS requirements', 'Which broker?', 'Pricing']
+    },
+    {
+        keywords: ['install', 'setup', 'set up', 'get started', 'start', 'deploy', 'installation'],
+        response: "Installation is straightforward — takes about <strong>15 minutes</strong>:\n\n<strong>Step 1:</strong> Get a Linux VPS ($5-12/month from DigitalOcean or Vultr)\n<strong>Step 2:</strong> Run our hardware ID command: <code>python3 -m omega_titan --hwid</code>\n<strong>Step 3:</strong> Send us your hardware ID — we generate your license\n<strong>Step 4:</strong> Upload the package to your VPS\n<strong>Step 5:</strong> Add your OANDA API key to the config\n<strong>Step 6:</strong> Start the service: <code>sudo systemctl start omega_titan</code>\n\nThe bot runs as a system service — auto-restarts on failure, starts on reboot. We provide full setup assistance with every plan.",
+        quickReplies: ['VPS requirements', 'OANDA setup', 'What is a hardware ID?']
+    },
+    {
+        keywords: ['vps', 'server', 'hosting', 'requirements', 'specs', 'what do i need', 'system req'],
+        response: "Omega Titan is lightweight. Here's what you need:\n\n<strong>Minimum VPS Specs:</strong>\n• OS: Ubuntu 20.04+ or Debian 11+\n• RAM: 512 MB\n• CPU: 1 vCPU\n• Storage: 1 GB\n• Python: 3.10+\n\n<strong>Recommended Providers:</strong>\n• <strong>DigitalOcean</strong> — $6/month (1GB RAM)\n• <strong>Vultr</strong> — $5/month\n• <strong>Hetzner</strong> — $4.50/month\n\nThe bot uses ~100MB RAM and minimal CPU. A $5-6/month VPS handles it perfectly. We help you set everything up.",
+        quickReplies: ['How to install?', 'Can I use my PC?', 'Pricing']
+    },
+    {
+        keywords: ['broker', 'oanda', 'which broker', 'account', 'trading account', 'mt4', 'mt5', 'metatrader'],
+        response: "Omega Titan connects directly to <strong>OANDA</strong> via their REST API.\n\n<strong>What you need:</strong>\n• An OANDA fxTrade account (practice or live)\n• Your API access token (generated in OANDA's dashboard)\n• Your account ID\n\n<strong>No MetaTrader required.</strong> We connect directly to OANDA's servers — faster execution, no middleman.\n\nWe recommend starting on an <strong>OANDA Practice account</strong> (free, uses virtual money) to see the system in action before committing real capital.",
+        quickReplies: ['How to get OANDA API key?', 'Is it free to practice?', 'Installation guide']
+    },
+    {
+        keywords: ['oanda api', 'api key', 'api token', 'access token', 'credentials'],
+        response: "To get your OANDA API credentials:\n\n<strong>1.</strong> Sign up at <a href='https://www.oanda.com' target='_blank'>oanda.com</a> (Practice or Live)\n<strong>2.</strong> Log into your OANDA account dashboard\n<strong>3.</strong> Go to <strong>Manage API Access</strong> (under My Account)\n<strong>4.</strong> Click <strong>Generate</strong> to create a personal access token\n<strong>5.</strong> Copy the token — you'll paste it into Omega Titan's config\n\nYour Account ID is visible in the top-left of the OANDA dashboard. Both the token and account ID go into your bot's configuration file.",
+        quickReplies: ['Practice vs Live?', 'Installation steps', 'Is it safe?']
+    },
+    {
+        keywords: ['price', 'pricing', 'cost', 'how much', 'subscription', 'plans', 'monthly', 'expensive', 'afford', 'pay', 'payment'],
+        response: "We offer three plans:\n\n<strong>Starter — $197/mo</strong>\n4 core engines (Confluence, BB Scalp, Pulse, M30 Trend), Telegram alerts, setup support\n\n<strong>Professional — $497/mo</strong> ⭐ Most Popular\nAll 7 engines including HYDRA, CASCADE, and SEISMIC. Priority support, VPS setup assistance, weekly performance reviews\n\n<strong>Enterprise — Custom Pricing</strong>\nWhite-label deployment, custom pair selection, parameter tuning, dedicated account manager, SLA guarantee\n\nAll plans include a <strong>14-day free trial</strong> with full access. No credit card required to start.",
+        quickReplies: ['Start free trial', 'Starter vs Pro?', 'Enterprise details']
+    },
+    {
+        keywords: ['trial', 'free trial', 'try', 'test', 'demo', 'free'],
+        response: "Yes! We offer a <strong>14-day free trial</strong> with full access to all 7 engines.\n\n<strong>What's included:</strong>\n• All 7 trading engines active\n• Full VPS setup assistance\n• Telegram trade notifications\n• Technical support\n\n<strong>No credit card required</strong> to start. We recommend running on an OANDA Practice account during the trial so you can see performance with zero risk.\n\nTo request access, email us at <strong>contact@omegatitan.io</strong> or click the 'Request Trial Access' button below.",
+        quickReplies: ['Request trial', 'How to install?', 'What pairs?']
+    },
+    {
+        keywords: ['starter vs pro', 'difference', 'which plan', 'compare plan', 'recommend'],
+        response: "Here's the key difference:\n\n<strong>Starter ($197/mo)</strong> gives you 4 engines:\n• Confluence, BB Scalp, Pulse, M30 Trend\n• These are solid, proven systems\n\n<strong>Professional ($497/mo)</strong> adds 3 advanced engines:\n• <strong>HYDRA</strong> — Swarm intelligence with 5 voting agents\n• <strong>CASCADE</strong> — Wave symmetry + structural breakouts\n• <strong>SEISMIC</strong> — Immune system + seismic wave detection\n\nThe Pro engines use <strong>fundamentally different signal sources</strong> that are uncorrelated with the Starter engines. More engines = more diversified signals = more opportunities.\n\nMy recommendation: <strong>start with Pro on the free trial</strong> — you can always downgrade if you decide 4 engines are enough.",
+        quickReplies: ['Start free trial', 'How does HYDRA work?', 'Pricing page']
+    },
+    {
+        keywords: ['pair', 'pairs', 'currency', 'currencies', 'which pair', 'eur', 'gbp', 'usd', 'jpy', 'forex pair'],
+        response: "Omega Titan currently trades <strong>4 major forex pairs</strong>:\n\n• <strong>EUR/USD</strong> — Euro / US Dollar\n• <strong>GBP/USD</strong> — British Pound / US Dollar\n• <strong>USD/JPY</strong> — US Dollar / Japanese Yen\n• <strong>GBP/JPY</strong> — British Pound / Japanese Yen\n\nEach pair has <strong>individually calibrated parameters</strong> — stop losses, take profits, and filters are optimized per pair, not one-size-fits-all.\n\nThe bot trades on <strong>H1 (hourly)</strong> and <strong>M30 (30-minute)</strong> timeframes. Enterprise clients can request custom pair configurations.",
+        quickReplies: ['Why these pairs?', 'What timeframes?', 'Enterprise plans']
+    },
+    {
+        keywords: ['timeframe', 'h1', 'm30', 'hourly', '30 min', 'scalp', 'swing'],
+        response: "Omega Titan operates on two timeframes:\n\n<strong>H1 (1-Hour)</strong>\n• Used by the Confluence engine (trend following)\n• Longer holds, fewer but higher-conviction trades\n• H4 bias alignment for directional filter\n\n<strong>M30 (30-Minute)</strong>\n• Used by HYDRA, SEISMIC, CASCADE, Pulse, BB, M30 Trend\n• More frequent opportunities\n• All gated by H1 trend quality scoring\n\nThe key insight: <strong>M30 entries are only taken when the H1 trend quality is high</strong>. This higher-timeframe gating is what separates Omega Titan from bots that overtrade on low timeframes.",
+        quickReplies: ['How many trades per day?', 'Risk management', 'How does gating work?']
+    },
+    {
+        keywords: ['how many trade', 'trade frequency', 'per day', 'per week', 'volume'],
+        response: "Trade frequency varies by market conditions, but typically:\n\n• <strong>5-15 trades per week</strong> across all 4 pairs\n• More active during London and New York sessions\n• Quieter during Asian session and ranging markets\n\nOmega Titan is <strong>not a high-frequency scalper</strong>. Every trade passes through 13+ quality filters. The bot <strong>waits</strong> for high-conviction setups rather than forcing trades in bad conditions.\n\nQuality over quantity is a core principle — fewer, better trades outperform frequent, mediocre ones.",
+        quickReplies: ['Risk management', 'Which sessions?', 'How does scoring work?']
+    },
+    {
+        keywords: ['risk', 'risk management', 'lot size', 'position size', 'drawdown', 'safe', 'money management'],
+        response: "Risk management is built into every layer:\n\n<strong>Position Sizing:</strong>\n• Dynamic — adapts to regime quality and volatility\n• Portfolio heat management prevents concentration\n• Correlated pair detection avoids doubling exposure\n\n<strong>Trade Protection:</strong>\n• Every trade has a stop loss (SL)\n• Breakeven lock after reaching a threshold\n• Trailing stop that follows profitable moves\n• Stall detection exits dead trades\n• Timeout exits prevent infinite holds\n\n<strong>You set your max risk per trade</strong> in the config. The bot respects it at all times. We recommend 1-2% per trade for most account sizes.",
+        quickReplies: ['What about drawdowns?', 'Recommended account size?', 'Protection details']
+    },
+    {
+        keywords: ['drawdown', 'lose', 'loss', 'losing', 'worst case', 'max loss'],
+        response: "Important to be transparent:\n\n<strong>No system eliminates losses.</strong> Omega Titan has multiple layers of protection, but drawdowns are a natural part of trading.\n\n<strong>How we manage risk:</strong>\n• Max risk per trade is configurable (we recommend 1-2%)\n• Portfolio heat limits prevent too much exposure\n• Correlation detection avoids doubling down on related pairs\n• Stall/timeout exits prevent large single-trade losses\n\nWe strongly recommend:\n1. <strong>Start on a Practice account</strong> first\n2. Never trade with money you can't afford to lose\n3. Keep position sizes conservative\n\nForex trading carries significant risk. Past performance doesn't guarantee future results.",
+        quickReplies: ['Risk disclaimer', 'Account size?', 'Practice account']
+    },
+    {
+        keywords: ['account size', 'minimum', 'how much money', 'capital', 'minimum deposit', 'balance'],
+        response: "OANDA has <strong>no minimum deposit</strong> — you can start with any amount.\n\nHowever, for practical purposes:\n\n• <strong>Practice Account:</strong> Free, uses virtual funds — start here\n• <strong>$500-1,000:</strong> Minimum for meaningful live trading\n• <strong>$5,000+:</strong> Recommended for comfortable position sizing\n• <strong>$10,000+:</strong> Ideal for running all 4 pairs with proper diversification\n\nSmaller accounts work but mean smaller position sizes. The bot's percentage-based risk management scales to any account size.\n\n<strong>Always start on a Practice account first</strong> to see how the system performs before committing real capital.",
+        quickReplies: ['How to open OANDA account?', 'Pricing plans', 'Free trial']
+    },
+    {
+        keywords: ['personal computer', 'my pc', 'my laptop', 'my mac', 'run locally', 'desktop', 'no vps', 'without vps'],
+        response: "Technically yes, but we <strong>strongly recommend a VPS</strong>. Here's why:\n\n<strong>The forex market runs 24/5.</strong> If you close your laptop, the bot stops. Missed trades, missed exits, unmanaged positions.\n\n<strong>A VPS costs $5-6/month</strong> and gives you:\n• 24/5 uptime — never miss a trade\n• Auto-restart on failure\n• Auto-start on reboot\n• No impact on your personal computer\n• Faster execution (closer to broker servers)\n\nThink of it this way: $6/month for reliable uptime is a tiny cost compared to missing trades because your laptop went to sleep.",
+        quickReplies: ['VPS recommendations', 'How to set up VPS?', 'Installation guide']
+    },
+    {
+        keywords: ['protect', 'code protect', 'reverse engineer', 'steal', 'copy', 'security', 'license', 'hardware lock'],
+        response: "Omega Titan has <strong>5 layers of code protection</strong>:\n\n<strong>1. Compiled Bytecode</strong> — No readable source code is ever distributed\n<strong>2. Hardware-Locked License</strong> — Each license is bound to your specific machine's fingerprint. Cannot be copied or transferred\n<strong>3. Encrypted Parameter Vault</strong> — All proprietary trading parameters are encrypted\n<strong>4. Integrity Verification</strong> — Detects any file tampering or modification\n<strong>5. Anti-Debugging</strong> — Detects reverse engineering attempts\n\nYour license key only works on <strong>your specific VPS</strong>. If you migrate servers, we issue a new license for the new machine.",
+        quickReplies: ['What is hardware ID?', 'Can I change servers?', 'Pricing']
+    },
+    {
+        keywords: ['hardware id', 'hwid', 'machine id', 'fingerprint', 'machine fingerprint'],
+        response: "Your Hardware ID is a unique fingerprint of your server. It's generated from:\n\n• Network interface\n• Hostname\n• CPU information\n• Operating system\n• Machine ID\n\n<strong>To get your Hardware ID:</strong>\n<code>python3 -m omega_titan --hwid</code>\n\nThis outputs a 16-character hex string (example: <code>d737ad0546498a86</code>). Send this to us and we generate a license key locked to that specific machine.\n\nThe HWID ensures your license <strong>cannot be shared or pirated</strong>. It only works on the machine it was generated for.",
+        quickReplies: ['Installation steps', 'Can I change servers?', 'License info']
+    },
+    {
+        keywords: ['change server', 'migrate', 'move server', 'new vps', 'new server', 'transfer'],
+        response: "Yes, you can migrate to a new server. Here's the process:\n\n<strong>1.</strong> Set up your new VPS\n<strong>2.</strong> Run <code>python3 -m omega_titan --hwid</code> on the new server\n<strong>3.</strong> Send us the new Hardware ID\n<strong>4.</strong> We issue a new license for the new machine\n<strong>5.</strong> Deploy and activate on the new server\n\nThe old license is automatically deactivated — each license works on <strong>one machine at a time</strong>. Server migrations are included free with all plans.",
+        quickReplies: ['VPS setup help', 'Installation guide', 'Contact support']
+    },
+    {
+        keywords: ['hydra', 'swarm', 'agents', 'voting'],
+        response: "<strong>HYDRA Engine — Swarm Intelligence</strong>\n\nHYDRA uses 5 autonomous agents that each analyze the market differently:\n\n• Each agent uses a unique analytical approach\n• Agents <strong>vote</strong> on whether to take a trade\n• A minimum consensus threshold must be met\n• After each trade, agents adjust their decision weights using <strong>Bayesian learning</strong>\n\nThis means HYDRA <strong>evolves over time</strong> — agents that make better predictions gain more voting power. It's inspired by biological swarm intelligence (how bees, ants, and fish make collective decisions).\n\nAvailable in the <strong>Professional plan</strong> and above.",
+        quickReplies: ['About SEISMIC', 'About IMMUNO', 'Pro plan details']
+    },
+    {
+        keywords: ['seismic', 'earthquake', 'p-wave', 'richter'],
+        response: "<strong>SEISMIC Engine — Seismic Wave Analysis</strong>\n\nInspired by how geologists detect earthquakes before they hit:\n\n• Detects market \"P-waves\" — early momentum signals that precede larger moves\n• Uses <strong>3 triangulation stations</strong> (velocity, acceleration, range expansion) to confirm direction\n• Measures signal \"Richter magnitude\" for position sizing\n• Combined with the IMMUNO system's T-cell memory\n\nJust like earthquake early warning systems detect tremors before the shaking starts, SEISMIC detects market momentum shifts before the big move.\n\nAvailable in the <strong>Professional plan</strong> and above.",
+        quickReplies: ['About HYDRA', 'About IMMUNO', 'Pro plan details']
+    },
+    {
+        keywords: ['immuno', 'immune', 't-cell', 'cytokine', 'biology'],
+        response: "<strong>IMMUNO Engine — Computational Immunology</strong>\n\nModeled after the human adaptive immune system:\n\n• <strong>T-Cell Memory</strong> — Remembers market patterns and whether they led to wins or losses\n• <strong>Antibody Formation</strong> — Builds defenses against setups that historically fail\n• <strong>Cytokine Storm Detection</strong> — When too many signals fire at once, it backs off (prevents overtrading)\n• Memory decays over time (like real immune memory) — stays adaptive\n\nThis is the system's <strong>self-protection mechanism</strong>. It literally learns from its own trading history to avoid repeating mistakes.\n\nAvailable in the <strong>Professional plan</strong> and above.",
+        quickReplies: ['About HYDRA', 'About CASCADE', 'Pro plan details']
+    },
+    {
+        keywords: ['cascade', 'wave', 'breakout', 'elliott'],
+        response: "<strong>CASCADE Engine — Wave Mechanics</strong>\n\nCombines structural breakout levels with wave symmetry:\n\n• Maps <strong>daily support/resistance clusters</strong> from higher-timeframe price action\n• Measures <strong>wave symmetry</strong> — how proportional current moves are to historical patterns\n• Phase-based trailing that captures full momentum moves\n• Especially powerful during structural breakout days\n\nWhen price breaks a key level AND wave symmetry confirms the move, CASCADE enters with a phase-based trailing system designed to ride the full move.\n\nAvailable in the <strong>Professional plan</strong> and above.",
+        quickReplies: ['About CONFLUENCE', 'About PULSE', 'Pro plan details']
+    },
+    {
+        keywords: ['confluence', 'smart money', 'order block', 'fvg', 'fair value', 'liquidity'],
+        response: "<strong>CONFLUENCE Engine — Smart Money Analysis</strong>\n\nThe backbone system with a 9-factor weighted scoring model:\n\n• Elliott Wave positioning\n• Fair Value Gaps (FVG)\n• Order Blocks (OB)\n• Liquidity Sweeps\n• Market Structure\n• And 4 additional proprietary factors\n\nEvery potential trade gets a <strong>confluence score</strong>. Only setups that pass the minimum score threshold are considered. Structure (FVG, OB, or Wave) is <strong>always required</strong> — the bot never trades without structural confirmation.\n\nAvailable in all plans.",
+        quickReplies: ['What timeframes?', 'Risk management', 'Pricing']
+    },
+    {
+        keywords: ['telegram', 'notification', 'alert', 'notify', 'phone'],
+        response: "Yes! Omega Titan sends <strong>real-time Telegram notifications</strong> for:\n\n• <strong>Trade Entries</strong> — pair, direction, engine, entry price, SL/TP\n• <strong>Trade Exits</strong> — profit/loss in pips, exit reason\n• <strong>System Status</strong> — startup confirmations, errors\n\nYou'll know about every trade the moment it happens, right on your phone.\n\n<strong>Setup is simple:</strong>\n1. Create a Telegram bot via @BotFather\n2. Get your chat ID\n3. Add both to Omega Titan's config\n\nWe walk you through this during setup. Takes 2 minutes.",
+        quickReplies: ['Installation guide', 'How to monitor?', 'VPS setup']
+    },
+    {
+        keywords: ['monitor', 'check', 'watch', 'logs', 'status', 'performance'],
+        response: "Several ways to monitor your bot:\n\n<strong>1. Telegram Alerts</strong> (recommended)\nReal-time notifications for every entry and exit\n\n<strong>2. Live Logs</strong>\n<code>journalctl -u omega_titan -f</code>\nWatch the bot's decision-making in real-time\n\n<strong>3. OANDA Dashboard</strong>\nSee open trades, account balance, and trade history directly in OANDA's web interface or mobile app\n\n<strong>4. Service Status</strong>\n<code>systemctl status omega_titan</code>\nCheck if the bot is running, uptime, memory usage\n\nPro plan users also get <strong>weekly performance reviews</strong> from our team.",
+        quickReplies: ['Telegram setup', 'VPS commands', 'Pro plan']
+    },
+    {
+        keywords: ['profit', 'guarantee', 'returns', 'how much can i make', 'performance', 'results', 'backtest'],
+        response: "I need to be upfront: <strong>we cannot and do not guarantee any profits.</strong>\n\nForex trading carries significant risk. No algorithm, no matter how sophisticated, can eliminate that risk or guarantee returns.\n\n<strong>What we can say:</strong>\n• The system uses 7 independently developed engines\n• Every trade passes 13+ quality filters\n• Risk management is built into every layer\n• The codebase is 12,000+ lines of tested logic\n\n<strong>What we recommend:</strong>\n• Start on an OANDA Practice account (free, virtual money)\n• Run the system for at least 30 days before considering live trading\n• Never trade with money you can't afford to lose\n\nPast performance is not indicative of future results.",
+        quickReplies: ['Start free trial', 'Risk management', 'Practice account']
+    },
+    {
+        keywords: ['practice', 'paper', 'demo', 'virtual', 'fake money', 'test account'],
+        response: "Yes — we <strong>strongly recommend</strong> starting with OANDA's Practice account:\n\n<strong>What is it?</strong>\nA free account with virtual money ($100K by default). Real market data, real execution — but no real money at risk.\n\n<strong>Why start here?</strong>\n• See how the bot performs with zero risk\n• Learn how the engines make decisions\n• Get comfortable with the setup and monitoring\n• Build confidence before going live\n\n<strong>How to get one:</strong>\nSign up at oanda.com → Select \"Practice Account\" → Free and instant.\n\nWe recommend running on Practice for at least <strong>30 days</strong> before considering live trading.",
+        quickReplies: ['How to sign up for OANDA?', 'Installation guide', 'Free trial']
+    },
+    {
+        keywords: ['enterprise', 'custom', 'white label', 'fund', 'prop', 'prop firm', 'institutional', 'bulk', 'multi account'],
+        response: "<strong>Enterprise Plan — Custom Pricing</strong>\n\nDesigned for fund managers, prop firms, and serious traders:\n\n• <strong>All 7 engines</strong> with full access\n• <strong>Custom pair selection</strong> — add or remove pairs\n• <strong>Parameter optimization</strong> — tuned for your risk profile\n• <strong>White-label branding</strong> — your brand, your clients\n• <strong>Multi-account deployment</strong> — run across multiple accounts\n• <strong>Dedicated account manager</strong>\n• <strong>SLA guarantee</strong> with on-call support\n• <strong>Custom engine development</strong> — we build engines to your specifications\n\nContact us at <strong>contact@omegatitan.io</strong> to discuss your requirements.",
+        quickReplies: ['Contact us', 'Pricing overview', 'How does licensing work?']
+    },
+    {
+        keywords: ['support', 'help', 'contact', 'email', 'reach', 'talk to human', 'real person'],
+        response: "You can reach our team at:\n\n<strong>Email:</strong> contact@omegatitan.io\n\n<strong>Support levels by plan:</strong>\n• <strong>Starter:</strong> Email support + setup assistance\n• <strong>Professional:</strong> Priority email support + VPS setup + weekly reviews\n• <strong>Enterprise:</strong> Dedicated account manager + on-call support + SLA\n\nDuring your free trial, you get <strong>full setup support</strong> including VPS configuration, OANDA connection, and Telegram notifications.\n\nI can answer most technical questions right here — try me!",
+        quickReplies: ['Installation help', 'Pricing', 'VPS setup']
+    },
+    {
+        keywords: ['session', 'trading session', 'london', 'new york', 'asian', 'tokyo', 'when does it trade'],
+        response: "Omega Titan is session-aware and trades primarily during:\n\n<strong>London Session</strong> (3 AM - 12 PM ET) — Most active\n<strong>New York Session</strong> (8 AM - 5 PM ET) — High volume\n<strong>London/NY Overlap</strong> (8 AM - 12 PM ET) — Peak activity\n\nThe <strong>Asian session is mostly filtered out</strong> for most engines due to lower volatility and choppier price action.\n\nThis is automatic — the bot knows which sessions are active and adjusts accordingly. You don't need to configure anything.",
+        quickReplies: ['How many trades per week?', 'Which pairs?', 'Risk management']
+    },
+    {
+        keywords: ['update', 'upgrade', 'new version', 'patch', 'maintenance'],
+        response: "Updates are included with all plans:\n\n<strong>How updates work:</strong>\n• We release updates as new packages\n• Upload to your VPS and restart the service\n• License key remains the same (unless you change servers)\n• All parameter improvements are included\n\n<strong>Pro and Enterprise</strong> users get priority access to new engines and features as they're developed.\n\nWe never push updates automatically — you control when to update. We notify you when a new version is available and provide upgrade instructions.",
+        quickReplies: ['Installation guide', 'Change servers?', 'Contact support']
+    },
+    {
+        keywords: ['different', 'special', 'unique', 'why omega', 'vs other', 'better', 'competitor', 'comparison'],
+        response: "What makes Omega Titan fundamentally different:\n\n<strong>1. Signal Sources</strong>\nTypical bots: RSI, MACD, Moving Averages\nOmega Titan: Entropy, GARCH, Swarm Intelligence, Immune Systems, Seismic Waves\n\n<strong>2. Scale</strong>\nTypical bots: 200-500 lines, 1-2 strategies\nOmega Titan: 12,000+ lines, 7 independent engines\n\n<strong>3. Adaptability</strong>\nTypical bots: Static rules forever\nOmega Titan: Bayesian learning evolves after every trade\n\n<strong>4. Protection</strong>\nTypical bots: Open source or basic .ex4\nOmega Titan: 5-layer encrypted, hardware-locked protection\n\n<strong>5. Quality Gating</strong>\nTypical bots: 2-3 entry conditions\nOmega Titan: 13+ sequential filters per trade\n\nWe're not iterating on the same old indicators — we're applying science from entirely different fields.",
+        quickReplies: ['View comparison table', 'Pricing', 'Start trial']
+    }
+];
+
+// ─── Fallback responses ───
+const FALLBACKS = [
+    "That's a great question! I don't have a specific answer for that, but our team can help. Reach out at <strong>contact@omegatitan.io</strong> and we'll get back to you quickly.",
+    "I'm not sure about that specific topic. Want me to connect you with our support team? Email <strong>contact@omegatitan.io</strong> — they're very responsive.",
+    "Hmm, I don't have that info handy. Our support team at <strong>contact@omegatitan.io</strong> can give you a detailed answer. Anything else I can help with?",
+];
+
+let chatOpen = false;
+let firstOpen = true;
+
+function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatFab').classList.toggle('open', chatOpen);
+    document.getElementById('chatWindow').classList.toggle('open', chatOpen);
+    document.getElementById('chatBadge').style.display = chatOpen ? 'none' : '';
+
+    if (firstOpen && chatOpen) {
+        firstOpen = false;
+        setTimeout(() => {
+            addBotMessage("Hey! I'm the Omega Titan assistant. I can help with installation, pricing, setup, engine details — anything about the system. What would you like to know?",
+                ['How does it work?', 'Pricing plans', 'Installation guide', 'VPS requirements']);
+        }, 400);
+    }
+    if (chatOpen) document.getElementById('chatInput').focus();
+}
+
+function addBotMessage(text, quickReplies) {
+    const container = document.getElementById('chatMessages');
+
+    // Typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'msg msg-bot';
+    typing.innerHTML = '<div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+    container.appendChild(typing);
+    container.scrollTop = container.scrollHeight;
+
+    const delay = Math.min(text.length * 3 + 400, 1800);
+
+    setTimeout(() => {
+        typing.remove();
+
+        const msg = document.createElement('div');
+        msg.className = 'msg msg-bot';
+        let html = '<div class="msg-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
+        html += '<div class="msg-time">' + timeNow() + '</div>';
+
+        if (quickReplies && quickReplies.length) {
+            html += '<div class="quick-replies">';
+            quickReplies.forEach(q => {
+                html += '<button class="quick-btn" onclick="sendQuick(\'' + q.replace(/'/g, "\\'") + '\')">' + q + '</button>';
+            });
+            html += '</div>';
+        }
+        msg.innerHTML = html;
+        container.appendChild(msg);
+        container.scrollTop = container.scrollHeight;
+    }, delay);
+}
+
+function addUserMessage(text) {
+    const container = document.getElementById('chatMessages');
+    const msg = document.createElement('div');
+    msg.className = 'msg msg-user';
+    msg.innerHTML = '<div class="msg-bubble">' + escapeHtml(text) + '</div><div class="msg-time">' + timeNow() + '</div>';
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+}
+
+function findResponse(input) {
+    const lower = input.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+    let bestMatch = null;
+    let bestScore = 0;
+
+    for (const entry of KNOWLEDGE_BASE) {
+        let score = 0;
+        for (const kw of entry.keywords) {
+            if (lower.includes(kw)) {
+                score += kw.split(' ').length; // Multi-word matches score higher
+            }
+        }
+        if (score > bestScore) {
+            bestScore = score;
+            bestMatch = entry;
+        }
+    }
+
+    if (bestMatch && bestScore > 0) {
+        return { response: bestMatch.response, quickReplies: bestMatch.quickReplies };
+    }
+
+    return {
+        response: FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)],
+        quickReplies: ['How does it work?', 'Pricing', 'Installation', 'Contact support']
+    };
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    addUserMessage(text);
+
+    const { response, quickReplies } = findResponse(text);
+    setTimeout(() => addBotMessage(response, quickReplies), 300);
+}
+
+function sendQuick(text) {
+    // Remove all quick reply buttons after clicking
+    document.querySelectorAll('.quick-replies').forEach(el => el.remove());
+    addUserMessage(text);
+    const { response, quickReplies } = findResponse(text);
+    setTimeout(() => addBotMessage(response, quickReplies), 300);
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function timeNow() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// Enter key to send
+document.getElementById('chatInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+});
+</script>
+
 </body>
 </html>
