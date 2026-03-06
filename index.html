@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMEGA TITAN — Algorithmic Trading Beyond Indicators</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #05060b;
+            --bg-secondary: #0c0d14;
+            --bg-card: #10111a;
+            --bg-card-hover: #141520;
+            --border: #1a1b2e;
+            --border-glow: #3b82f6;
+            --text-primary: #e8eaf0;
+            --text-secondary: #8b92a8;
+            --text-muted: #555b73;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06d6d6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #00e68a;
+            --accent-amber: #ffb340;
+            --accent-red: #ff4d6a;
+            --accent-pink: #e040fb;
+            --gradient-hero: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 40%, #e040fb 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6, #06d6d6);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6, #e040fb);
+            --gradient-card: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.05));
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #1e2040; border-radius: 3px; }
+
+        /* ─── Canvas Particles ─── */
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ─── Grid overlay ─── */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(59,130,246,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.018) 1px, transparent 1px);
+            background-size: 80px 80px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ─── Ambient glow orbs ─── */
+        .ambient { position: fixed; top:0; left:0; right:0; bottom:0; z-index:0; pointer-events:none; overflow:hidden; }
+        .ambient .orb { position: absolute; border-radius: 50%; filter: blur(150px); }
+        .orb-1 { width:700px; height:700px; background:rgba(59,130,246,0.07); top:-200px; left:-200px; animation: drift 25s infinite ease-in-out; }
+        .orb-2 { width:500px; height:500px; background:rgba(139,92,246,0.06); top:50%; right:-150px; animation: drift 30s infinite ease-in-out reverse; }
+        .orb-3 { width:600px; height:600px; background:rgba(6,214,214,0.04); bottom:-200px; left:40%; animation: drift 20s infinite ease-in-out 5s; }
+        @keyframes drift {
+            0%,100%{transform:translate(0,0) scale(1)}
+            25%{transform:translate(40px,-40px) scale(1.05)}
+            50%{transform:translate(-30px,30px) scale(0.97)}
+            75%{transform:translate(20px,-20px) scale(1.03)}
+        }
+
+        .content { position: relative; z-index: 1; }
+
+        /* ─── Navigation ─── */
+        nav {
+            position: fixed; top:0; left:0; right:0;
+            padding: 0 2rem;
+            height: 72px;
+            background: rgba(5,6,11,0.7);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        nav.scrolled { background: rgba(5,6,11,0.92); border-bottom-color: var(--border); }
+        .nav-logo {
+            font-weight: 900; font-size: 1.15rem; letter-spacing: 3px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+            font-weight: 500; transition: color 0.3s; position: relative;
+        }
+        .nav-links a::after {
+            content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px;
+            background: var(--gradient-hero); transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            padding: 0.55rem 1.4rem;
+            background: var(--gradient-hero);
+            border: none; border-radius: 10px;
+            color: white; font-weight: 600; font-size: 0.82rem;
+            cursor: pointer; text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(59,130,246,0.35); }
+
+        /* ─── Mobile hamburger ─── */
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .hamburger span { display:block; width:22px; height:2px; background:var(--text-secondary); transition: all 0.3s; border-radius:1px; }
+
+        /* ─── Hero ─── */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+        .hero::after {
+            content:''; position:absolute; bottom:0; left:0; right:0; height:200px;
+            background: linear-gradient(transparent, var(--bg-primary));
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.45rem 1.1rem;
+            background: rgba(59,130,246,0.08);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 100px;
+            font-size: 0.78rem; color: var(--accent-blue);
+            font-weight: 500; margin-bottom: 2.5rem;
+            animation: fadeInDown 0.8s ease;
+        }
+        .hero-badge .pulse-ring {
+            width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%;
+            position: relative;
+        }
+        .hero-badge .pulse-ring::before {
+            content:''; position:absolute; inset:-3px;
+            border: 1.5px solid var(--accent-green); border-radius:50%;
+            animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;
+        }
+        @keyframes ping { 75%,100%{transform:scale(2.2);opacity:0} }
+        @keyframes fadeInDown { from{opacity:0;transform:translateY(-15px)} to{opacity:1;transform:translateY(0)} }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900; line-height: 1.08;
+            margin-bottom: 1.5rem; letter-spacing: -2px;
+            animation: fadeInUp 0.8s ease 0.15s both;
+        }
+        .hero h1 .gradient-text {
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%,100%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+        }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(25px)} to{opacity:1;transform:translateY(0)} }
+
+        .hero-sub {
+            font-size: 1.15rem; color: var(--text-secondary);
+            max-width: 580px; margin-bottom: 2.5rem;
+            line-height: 1.8; font-weight: 400;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeInUp 0.8s ease 0.45s both; }
+        .btn-glow {
+            padding: 0.95rem 2.5rem;
+            background: var(--gradient-hero);
+            border: none; border-radius: 14px;
+            color: white; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.3s;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            position: relative; overflow: hidden;
+        }
+        .btn-glow::before {
+            content:''; position:absolute; inset:0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .btn-glow:hover::before { transform: translateX(100%); }
+        .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(59,130,246,0.35); }
+        .btn-ghost {
+            padding: 0.95rem 2.5rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            color: var(--text-primary); font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; text-decoration: none;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .btn-ghost:hover { border-color: var(--accent-blue); background: rgba(59,130,246,0.05); }
+
+        /* ─── Terminal ─── */
+        .terminal {
+            margin-top: 4rem; width: 100%; max-width: 780px;
+            background: rgba(12,13,20,0.9);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px; overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+            animation: fadeInUp 0.8s ease 0.6s both;
+            backdrop-filter: blur(12px);
+        }
+        .terminal-bar {
+            padding: 0.75rem 1.2rem;
+            background: rgba(255,255,255,0.025);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .term-dot { width: 11px; height: 11px; border-radius: 50%; }
+        .term-dot.r { background: #ff5f57; }
+        .term-dot.y { background: #febc2e; }
+        .term-dot.g { background: #28c840; }
+        .term-title {
+            flex:1; text-align:center;
+            font-size: 0.72rem; color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .terminal-body {
+            padding: 1.5rem 1.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem; line-height: 2;
+            min-height: 220px;
+        }
+        .t-line { opacity: 0; animation: typeLine 0.3s ease forwards; white-space: nowrap; overflow: hidden; }
+        .t-green { color: var(--accent-green); }
+        .t-blue { color: var(--accent-blue); }
+        .t-cyan { color: var(--accent-cyan); }
+        .t-amber { color: var(--accent-amber); }
+        .t-purple { color: var(--accent-purple); }
+        .t-pink { color: var(--accent-pink); }
+        .t-dim { color: var(--text-muted); }
+        .t-white { color: var(--text-primary); }
+        @keyframes typeLine { from{opacity:0;transform:translateX(-5px)} to{opacity:1;transform:translateX(0)} }
+        .cursor-blink { display: inline-block; width: 7px; height: 14px; background: var(--accent-green); animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 2px; }
+        @keyframes blink { 50%{opacity:0} }
+
+        /* ─── Section styling ─── */
+        section { padding: 7rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-label {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 4px; margin-bottom: 1rem;
+            background: var(--gradient-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .section-title {
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; line-height: 1.15;
+        }
+        .section-sub {
+            font-size: 1.05rem; color: var(--text-secondary);
+            max-width: 580px; line-height: 1.85; margin-bottom: 3.5rem;
+        }
+
+        /* ─── Stats marquee ─── */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 1000px;
+            background: var(--bg-card);
+        }
+        .stat-box {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            border-right: 1px solid var(--border);
+            position: relative;
+        }
+        .stat-box:last-child { border-right: none; }
+        .stat-num {
+            font-size: 3rem; font-weight: 900; line-height: 1;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.5px; }
+
+        /* ─── Engine Cards ─── */
+        .engines-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+        .engine-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 2rem 1.8rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; overflow: hidden;
+        }
+        .engine-card:hover {
+            border-color: rgba(59,130,246,0.3);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(59,130,246,0.08), 0 0 0 1px rgba(59,130,246,0.1);
+        }
+        .engine-card::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:2px;
+            background: var(--gradient-hero); opacity:0; transition: opacity 0.4s;
+        }
+        .engine-card:hover::before { opacity: 1; }
+        .engine-card::after {
+            content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+            background: radial-gradient(circle at 50% 0%, rgba(59,130,246,0.06) 0%, transparent 60%);
+            opacity:0; transition: opacity 0.4s;
+        }
+        .engine-card:hover::after { opacity: 1; }
+        .engine-card .card-inner { position: relative; z-index: 1; }
+        .engine-icon-wrap {
+            width: 52px; height: 52px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; margin-bottom: 1.2rem;
+        }
+        .engine-tag {
+            display: inline-block; padding: 0.2rem 0.65rem;
+            border-radius: 6px; font-size: 0.65rem;
+            font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.2px; margin-bottom: 0.7rem;
+        }
+        .engine-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .engine-card p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7; }
+
+        .tag-blue { background: rgba(59,130,246,0.12); color: var(--accent-blue); }
+        .tag-purple { background: rgba(139,92,246,0.12); color: var(--accent-purple); }
+        .tag-cyan { background: rgba(6,214,214,0.12); color: var(--accent-cyan); }
+        .tag-green { background: rgba(0,230,138,0.12); color: var(--accent-green); }
+        .tag-amber { background: rgba(255,179,64,0.12); color: var(--accent-amber); }
+        .tag-pink { background: rgba(224,64,251,0.12); color: var(--accent-pink); }
+
+        .icon-blue { background: rgba(59,130,246,0.1); }
+        .icon-purple { background: rgba(139,92,246,0.1); }
+        .icon-cyan { background: rgba(6,214,214,0.1); }
+        .icon-green { background: rgba(0,230,138,0.1); }
+        .icon-amber { background: rgba(255,179,64,0.1); }
+        .icon-pink { background: rgba(224,64,251,0.1); }
+
+        .engine-card.span-full { grid-column: 1 / -1; }
+        .engine-card.span-full .card-inner {
+            display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center;
+        }
+
+        /* ─── How It Works ─── */
+        .how-it-works {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+        }
+        .step-list { list-style: none; }
+        .step-item {
+            display: flex; gap: 1.2rem; padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .step-item:last-child { border-bottom: none; }
+        .step-num {
+            width: 40px; height: 40px; min-width: 40px;
+            border-radius: 12px; display: flex;
+            align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem;
+            margin-top: 2px;
+        }
+        .step-item h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .step-item p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* ─── Architecture ─── */
+        .arch-box {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden;
+        }
+        .arch-box::before {
+            content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+            background: radial-gradient(ellipse at top center, rgba(59,130,246,0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .arch-flow {
+            display: flex; flex-direction: column; gap: 0;
+            position: relative; z-index: 1;
+        }
+        .arch-row {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 0.9rem 1.2rem; margin-bottom: 0;
+            border-radius: 12px; background: rgba(255,255,255,0.015);
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: background 0.3s;
+        }
+        .arch-row:hover { background: rgba(255,255,255,0.04); }
+        .arch-num {
+            width: 32px; height: 32px; min-width:32px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.8rem;
+        }
+        .arch-name { font-weight: 600; font-size: 0.88rem; }
+        .arch-desc { margin-left: auto; font-size: 0.75rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+        .arch-pipe {
+            width: 2px; height: 14px;
+            background: linear-gradient(var(--border), rgba(59,130,246,0.2));
+            margin-left: 2.3rem;
+        }
+
+        /* ─── Comparison ─── */
+        .comparison-wrap {
+            overflow-x: auto; border: 1px solid var(--border);
+            border-radius: 18px; background: var(--bg-card);
+        }
+        .comp-table {
+            width: 100%; border-collapse: collapse;
+        }
+        .comp-table th, .comp-table td {
+            padding: 1.1rem 1.6rem; text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.88rem;
+        }
+        .comp-table thead th {
+            color: var(--text-muted); font-weight: 600;
+            font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1.5px; background: rgba(255,255,255,0.015);
+        }
+        .comp-table td:first-child { font-weight: 600; color: var(--text-primary); }
+        .comp-table .col-omega {
+            background: rgba(59,130,246,0.03);
+        }
+        .comp-table thead .col-omega {
+            color: var(--accent-blue); background: rgba(59,130,246,0.06);
+        }
+        .comp-yes { color: var(--accent-green); font-weight: 600; }
+        .comp-no { color: var(--text-muted); }
+        .comp-table tbody tr:last-child td { border-bottom: none; }
+
+        /* ─── Pricing ─── */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem; max-width: 1050px; margin: 0 auto;
+        }
+        .price-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 2.8rem 2.2rem;
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s;
+            position: relative;
+        }
+        .price-card:hover { transform: translateY(-6px); }
+        .price-card.featured {
+            border-color: rgba(59,130,246,0.4);
+            box-shadow: 0 0 60px rgba(59,130,246,0.08), 0 0 0 1px rgba(59,130,246,0.15);
+            background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+                        linear-gradient(135deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3)) border-box;
+            border: 1px solid transparent;
+        }
+        .price-badge {
+            position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+            padding: 0.35rem 1.2rem; background: var(--gradient-hero);
+            border-radius: 100px; font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 1.5px; white-space: nowrap;
+        }
+        .price-tier {
+            font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 2.5px; color: var(--text-muted); margin-bottom: 1.2rem;
+        }
+        .price-amount {
+            font-size: 3.8rem; font-weight: 900; margin-bottom: 0.3rem; line-height: 1;
+        }
+        .price-amount .currency { font-size: 1.8rem; vertical-align: super; font-weight: 700; }
+        .price-amount .period { font-size: 0.9rem; font-weight: 400; color: var(--text-muted); }
+        .price-desc {
+            color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;
+            margin: 1rem 0 2rem; padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .price-features { list-style: none; text-align: left; margin-bottom: 2rem; }
+        .price-features li {
+            padding: 0.5rem 0; font-size: 0.88rem; color: var(--text-secondary);
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .price-features .check { color: var(--accent-green); font-weight: 700; font-size: 0.9rem; }
+        .price-features .x { color: var(--text-muted); font-size: 0.8rem; }
+        .price-features li.off { opacity: 0.35; }
+        .price-btn {
+            width: 100%; padding: 1rem; border-radius: 14px; border: none;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            letter-spacing: 0.3px;
+        }
+        .price-btn-glow {
+            background: var(--gradient-hero); color: white;
+        }
+        .price-btn-ghost {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-primary);
+        }
+        .price-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(59,130,246,0.2); }
+
+        /* ─── FAQ ─── */
+        .faq-grid { max-width: 800px; margin: 0 auto; }
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding: 1.8rem 0;
+        }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-q {
+            font-size: 1.05rem; font-weight: 600; margin-bottom: 0.8rem;
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+        }
+        .faq-q .faq-icon {
+            width: 28px; height: 28px; min-width:28px; border-radius: 8px;
+            background: rgba(59,130,246,0.1); color: var(--accent-blue);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; font-weight: 300;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+        .faq-a {
+            font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s;
+            opacity: 0;
+        }
+        .faq-item.open .faq-a { max-height: 300px; opacity: 1; }
+
+        /* ─── Disclaimer ─── */
+        .disclaimer {
+            max-width: 800px; margin: 0 auto; padding: 2rem 2.5rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 16px; font-size: 0.78rem;
+            color: var(--text-muted); line-height: 1.9;
+        }
+        .disclaimer h4 {
+            color: var(--text-secondary); margin-bottom: 0.6rem;
+            font-size: 0.82rem; font-weight: 600;
+        }
+
+        /* ─── CTA ─── */
+        .cta-section {
+            text-align: center; padding: 8rem 2rem; position: relative;
+        }
+        .cta-section::before {
+            content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+            background: radial-gradient(ellipse at center, rgba(59,130,246,0.06) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .cta-section h2 {
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px;
+        }
+        .cta-section p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+        /* ─── Footer ─── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem; text-align: center;
+            color: var(--text-muted); font-size: 0.82rem;
+        }
+        .footer-logo {
+            font-weight: 900; font-size: 1rem; letter-spacing: 3px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--text-secondary); }
+
+        /* ─── Animations ─── */
+        .reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 1024px) {
+            .engines-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+            .engine-card.span-full { grid-column: 1 / -1; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .hero h1 { letter-spacing: -1px; }
+            .engines-grid { grid-template-columns: 1fr; }
+            .engine-card.span-full .card-inner { grid-template-columns: 1fr; }
+            .how-it-works { grid-template-columns: 1fr; gap: 3rem; }
+            .stats-strip { grid-template-columns: repeat(2, 1fr); }
+            .stat-box:nth-child(2) { border-right: none; }
+            .stat-box:nth-child(1), .stat-box:nth-child(2) { border-bottom: 1px solid var(--border); }
+            section { padding: 5rem 1.5rem; }
+            .comp-table th, .comp-table td { padding: 0.9rem 1rem; font-size: 0.82rem; }
+        }
+        @media (max-width: 480px) {
+            .hero { padding: 7rem 1.2rem 3rem; }
+            .terminal-body { padding: 1.2rem; font-size: 0.7rem; }
+            .stat-num { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+<div class="ambient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+<div class="grid-bg"></div>
+
+<div class="content">
+
+    <!-- ─── Navigation ─── -->
+    <nav id="mainNav">
+        <div class="nav-logo">OMEGA TITAN</div>
+        <div class="nav-links">
+            <a href="#engines">Technology</a>
+            <a href="#how">How It Works</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+        </div>
+        <a href="#pricing" class="nav-cta">Get Started</a>
+        <div class="hamburger" onclick="this.classList.toggle('active')">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- ─── Hero ─── -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="pulse-ring"></span>
+            7 Autonomous Trading Engines &mdash; Live
+        </div>
+        <h1>
+            Trading Intelligence<br>
+            <span class="gradient-text">Beyond Indicators</span>
+        </h1>
+        <p class="hero-sub">
+            Seven independent systems powered by swarm intelligence, seismic wave theory,
+            and computational immunology. Fields that have never been applied to forex &mdash; until now.
+        </p>
+        <div class="hero-actions">
+            <a href="#pricing" class="btn-glow">Start 14-Day Trial &rarr;</a>
+            <a href="#engines" class="btn-ghost">Explore the Technology</a>
+        </div>
+
+        <!-- Terminal -->
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="term-dot r"></div>
+                <div class="term-dot y"></div>
+                <div class="term-dot g"></div>
+                <span class="term-title">omega_titan &mdash; live session</span>
+            </div>
+            <div class="terminal-body" id="termBody">
+                <!-- JS-animated lines -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Stats ─── -->
+    <div class="stats-strip reveal">
+        <div class="stat-box">
+            <div class="stat-num" id="statEngines">7</div>
+            <div class="stat-label">Independent Engines</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num">4</div>
+            <div class="stat-label">Major FX Pairs</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num" id="statLines">12,263</div>
+            <div class="stat-label">Lines of Logic</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num">24/5</div>
+            <div class="stat-label">Autonomous Trading</div>
+        </div>
+    </div>
+
+    <!-- ─── Engines ─── -->
+    <section id="engines">
+        <div class="section-label">The Technology</div>
+        <div class="section-title">Seven Engines. Zero Conventional Thinking.</div>
+        <div class="section-sub">
+            Each engine uses a fundamentally different scientific model to identify opportunities.
+            When multiple engines converge on the same trade, conviction is at its highest.
+        </div>
+
+        <div class="engines-grid">
+            <div class="engine-card reveal">
+                <div class="card-inner">
+                    <div class="engine-icon-wrap icon-purple">&#x1F9E0;</div>
+                    <span class="engine-tag tag-purple">Swarm Intelligence</span>
+                    <h3>HYDRA</h3>
+                    <p>Five autonomous agents vote on every trade using statistical entropy, volatility modeling, and momentum consensus. Agents evolve their decision weights after each trade through Bayesian online learning.</p>
+                </div>
+            </div>
+            <div class="engine-card reveal reveal-delay-1">
+                <div class="card-inner">
+                    <div class="engine-icon-wrap icon-cyan">&#x1F30B;</div>
+                    <span class="engine-tag tag-cyan">Seismic Analysis</span>
+                    <h3>SEISMIC</h3>
+                    <p>Detects market foreshocks using P-wave propagation theory from earthquake science. Three triangulation stations must confirm signal direction and magnitude before entry is allowed.</p>
+                </div>
+            </div>
+            <div class="engine-card reveal reveal-delay-2">
+                <div class="card-inner">
+                    <div class="engine-icon-wrap icon-green">&#x1F9EC;</div>
+                    <span class="engine-tag tag-green">Computational Immunology</span>
+                    <h3>IMMUNO</h3>
+                    <p>An adaptive immune system that builds T-cell memory of market patterns. Learns to reject setups that historically fail. Cytokine storm detection prevents overtrading during chaotic conditions.</p>
+                </div>
+            </div>
+            <div class="engine-card reveal">
+                <div class="card-inner">
+                    <div class="engine-icon-wrap icon-blue">&#x1F30A;</div>
+                    <span class="engine-tag tag-blue">Wave Mechanics</span>
+                    <h3>CASCADE</h3>
+                    <p>Maps daily structural breakout levels and projects wave symmetry from fractal price action. Phase-based trailing captures extended momentum moves after confirmed breakouts.</p>
+                </div>
+            </div>
+            <div class="engine-card reveal reveal-delay-1">
+                <div class="card-inner">
+                    <div class="engine-icon-wrap icon-amber">&#x26A1;</div>
+                    <span class="engine-tag tag-amber">Smart Money Confluence</span>
+                    <h3>CONFLUENCE</h3>
+                    <p>Nine-factor weighted scoring system analyzing Elliott Waves, fair value gaps, order blocks, and liquidity sweeps. The backbone that filters for only the highest-conviction setups.</p>
+                </div>
+            </div>
+            <div class="engine-card reveal reveal-delay-2">
+                <div class="card-inner">
+                    <div class="engine-icon-wrap icon-pink">&#x1F4CA;</div>
+                    <span class="engine-tag tag-pink">Adaptive Scalping</span>
+                    <h3>PULSE + BB</h3>
+                    <p>EMA8 pullback momentum bursts combined with Bollinger Band mean-reversion scalping. Both engines are gated by a proprietary higher-timeframe trend quality score &mdash; they only fire when conditions are pristine.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── How It Works ─── -->
+    <section id="how">
+        <div class="how-it-works">
+            <div>
+                <div class="section-label">How It Works</div>
+                <div class="section-title">Deploy in 15 Minutes. <br>Trade Autonomously 24/5.</div>
+                <div class="section-sub" style="margin-bottom:1rem;">
+                    No coding. No configuration files. Just deploy, activate your license, and let the engines run.
+                </div>
+                <ul class="step-list reveal">
+                    <li class="step-item">
+                        <div class="step-num" style="background:rgba(59,130,246,0.1);color:var(--accent-blue);">1</div>
+                        <div>
+                            <h4>Get Your Hardware ID</h4>
+                            <p>Run a single command on your VPS to generate a unique machine fingerprint. Takes 5 seconds.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num" style="background:rgba(139,92,246,0.1);color:var(--accent-purple);">2</div>
+                        <div>
+                            <h4>Receive Your License</h4>
+                            <p>We generate a hardware-locked license key bound to your specific server. Cannot be copied or shared.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num" style="background:rgba(6,214,214,0.1);color:var(--accent-cyan);">3</div>
+                        <div>
+                            <h4>Deploy &amp; Configure</h4>
+                            <p>Upload to your VPS, add your OANDA credentials, set your risk tolerance. One-command deployment.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num" style="background:rgba(0,230,138,0.1);color:var(--accent-green);">4</div>
+                        <div>
+                            <h4>Trade Autonomously</h4>
+                            <p>All 7 engines activate. Monitor via Telegram alerts. The bot handles analysis, entries, management, and exits.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="arch-box reveal">
+                <div style="font-weight:700;font-size:0.95rem;margin-bottom:1.5rem;color:var(--text-primary);">Trade Execution Pipeline</div>
+                <div class="arch-flow">
+                    <div class="arch-row">
+                        <div class="arch-num" style="background:rgba(239,68,68,0.1);color:var(--accent-red);">1</div>
+                        <span class="arch-name">Session Filter</span>
+                        <span class="arch-desc">active hours</span>
+                    </div>
+                    <div class="arch-pipe"></div>
+                    <div class="arch-row">
+                        <div class="arch-num" style="background:rgba(255,179,64,0.1);color:var(--accent-amber);">2</div>
+                        <span class="arch-name">Regime Analysis</span>
+                        <span class="arch-desc">trend / range</span>
+                    </div>
+                    <div class="arch-pipe"></div>
+                    <div class="arch-row">
+                        <div class="arch-num" style="background:rgba(59,130,246,0.1);color:var(--accent-blue);">3</div>
+                        <span class="arch-name">Entropy Gate</span>
+                        <span class="arch-desc">chop filter</span>
+                    </div>
+                    <div class="arch-pipe"></div>
+                    <div class="arch-row">
+                        <div class="arch-num" style="background:rgba(139,92,246,0.1);color:var(--accent-purple);">4</div>
+                        <span class="arch-name">7-Engine Analysis</span>
+                        <span class="arch-desc">signal gen</span>
+                    </div>
+                    <div class="arch-pipe"></div>
+                    <div class="arch-row">
+                        <div class="arch-num" style="background:rgba(6,214,214,0.1);color:var(--accent-cyan);">5</div>
+                        <span class="arch-name">Structure Validation</span>
+                        <span class="arch-desc">13+ gates</span>
+                    </div>
+                    <div class="arch-pipe"></div>
+                    <div class="arch-row">
+                        <div class="arch-num" style="background:rgba(0,230,138,0.1);color:var(--accent-green);">6</div>
+                        <span class="arch-name">Risk &amp; Execution</span>
+                        <span class="arch-desc">size &amp; deploy</span>
+                    </div>
+                </div>
+                <div style="margin-top:1.5rem;padding:1rem 1.2rem;background:rgba(0,230,138,0.04);border:1px solid rgba(0,230,138,0.1);border-radius:12px;font-size:0.8rem;color:var(--text-secondary);">
+                    <span style="color:var(--accent-green);font-weight:700;">13+ sequential gates</span> &mdash; every trade must pass session, regime, entropy, bias alignment, structure, scoring, and risk checks before execution.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Comparison ─── -->
+    <section>
+        <div style="text-align:center;">
+            <div class="section-label">Why Omega Titan</div>
+            <div class="section-title">Not Another Indicator Bot</div>
+            <div class="section-sub" style="margin:0 auto 3rem;">
+                Most trading bots recycle the same RSI/MACD/MA crossover strategies available on any $49 EA.
+                Omega Titan operates on entirely different scientific principles.
+            </div>
+        </div>
+
+        <div class="comparison-wrap reveal">
+            <table class="comp-table">
+                <thead>
+                    <tr>
+                        <th>Capability</th>
+                        <th>Typical Bot</th>
+                        <th class="col-omega">Omega Titan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Trading Systems</td>
+                        <td class="comp-no">1&ndash;2 strategies</td>
+                        <td class="col-omega comp-yes">7 independent engines</td>
+                    </tr>
+                    <tr>
+                        <td>Signal Source</td>
+                        <td class="comp-no">RSI, MACD, Bollinger</td>
+                        <td class="col-omega comp-yes">Entropy, GARCH, Swarm, Immune, Seismic</td>
+                    </tr>
+                    <tr>
+                        <td>Adaptive Learning</td>
+                        <td class="comp-no">Static rules</td>
+                        <td class="col-omega comp-yes">Bayesian evolution after every trade</td>
+                    </tr>
+                    <tr>
+                        <td>Entry Quality Gates</td>
+                        <td class="comp-no">2&ndash;3 conditions</td>
+                        <td class="col-omega comp-yes">13+ sequential filters</td>
+                    </tr>
+                    <tr>
+                        <td>Risk Management</td>
+                        <td class="comp-no">Fixed lot size</td>
+                        <td class="col-omega comp-yes">Dynamic sizing + portfolio heat + correlation</td>
+                    </tr>
+                    <tr>
+                        <td>Trade Protection</td>
+                        <td class="comp-no">Basic SL/TP</td>
+                        <td class="col-omega comp-yes">BE lock + trail + stall exit + timeout</td>
+                    </tr>
+                    <tr>
+                        <td>Code Security</td>
+                        <td class="comp-no">Open source / .ex4</td>
+                        <td class="col-omega comp-yes">Encrypted bytecode + hardware-locked license</td>
+                    </tr>
+                    <tr>
+                        <td>Codebase Size</td>
+                        <td class="comp-no">200&ndash;500 lines</td>
+                        <td class="col-omega comp-yes">12,000+ lines of proprietary logic</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ─── Pricing ─── -->
+    <section id="pricing">
+        <div style="text-align:center;">
+            <div class="section-label">Pricing</div>
+            <div class="section-title">Choose Your Edge</div>
+            <div class="section-sub" style="margin:0 auto 3.5rem;">
+                All plans include VPS setup assistance, Telegram trade notifications, and dedicated support.
+            </div>
+        </div>
+
+        <div class="pricing-grid reveal">
+            <!-- Starter -->
+            <div class="price-card">
+                <div class="price-tier">Starter</div>
+                <div class="price-amount"><span class="currency">$</span>197<span class="period">/mo</span></div>
+                <div class="price-desc">4 core engines for consistent, systematic trading performance</div>
+                <ul class="price-features">
+                    <li><span class="check">&#10003;</span> Confluence Engine</li>
+                    <li><span class="check">&#10003;</span> BB Scalp Engine</li>
+                    <li><span class="check">&#10003;</span> Pulse Engine</li>
+                    <li><span class="check">&#10003;</span> M30 Trend Engine</li>
+                    <li class="off"><span class="x">&times;</span> HYDRA Engine</li>
+                    <li class="off"><span class="x">&times;</span> CASCADE Engine</li>
+                    <li class="off"><span class="x">&times;</span> SEISMIC Engine</li>
+                    <li><span class="check">&#10003;</span> Telegram Alerts</li>
+                    <li><span class="check">&#10003;</span> Setup Support</li>
+                </ul>
+                <button class="price-btn price-btn-ghost">Get Started</button>
+            </div>
+
+            <!-- Pro -->
+            <div class="price-card featured">
+                <div class="price-badge">MOST POPULAR</div>
+                <div class="price-tier">Professional</div>
+                <div class="price-amount"><span class="currency">$</span>497<span class="period">/mo</span></div>
+                <div class="price-desc">All 7 engines with full adaptive intelligence and priority support</div>
+                <ul class="price-features">
+                    <li><span class="check">&#10003;</span> Everything in Starter</li>
+                    <li><span class="check">&#10003;</span> HYDRA &mdash; Swarm Intelligence</li>
+                    <li><span class="check">&#10003;</span> CASCADE &mdash; Wave Mechanics</li>
+                    <li><span class="check">&#10003;</span> SEISMIC &mdash; Immune System</li>
+                    <li><span class="check">&#10003;</span> Bayesian Weight Evolution</li>
+                    <li><span class="check">&#10003;</span> T-Cell Memory System</li>
+                    <li><span class="check">&#10003;</span> Priority Support</li>
+                    <li><span class="check">&#10003;</span> VPS Deployment Assistance</li>
+                    <li><span class="check">&#10003;</span> Weekly Performance Reviews</li>
+                </ul>
+                <button class="price-btn price-btn-glow">Start 14-Day Trial</button>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="price-card">
+                <div class="price-tier">Enterprise</div>
+                <div class="price-amount" style="font-size:2.8rem;">Custom</div>
+                <div class="price-desc">White-label deployment with custom configuration and dedicated account management</div>
+                <ul class="price-features">
+                    <li><span class="check">&#10003;</span> Everything in Pro</li>
+                    <li><span class="check">&#10003;</span> Custom Pair Selection</li>
+                    <li><span class="check">&#10003;</span> Parameter Optimization</li>
+                    <li><span class="check">&#10003;</span> White-Label Branding</li>
+                    <li><span class="check">&#10003;</span> Multi-Account Deployment</li>
+                    <li><span class="check">&#10003;</span> Dedicated Account Manager</li>
+                    <li><span class="check">&#10003;</span> Custom Engine Development</li>
+                    <li><span class="check">&#10003;</span> SLA Guarantee</li>
+                    <li><span class="check">&#10003;</span> On-Call Priority Support</li>
+                </ul>
+                <button class="price-btn price-btn-ghost">Contact Us</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── FAQ ─── -->
+    <section id="faq">
+        <div style="text-align:center;">
+            <div class="section-label">FAQ</div>
+            <div class="section-title">Common Questions</div>
+            <div class="section-sub" style="margin:0 auto 3rem;">
+                Everything you need to know before getting started.
+            </div>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item open">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    What broker does Omega Titan work with?
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-a">
+                    Omega Titan connects to OANDA via their REST API. You need an OANDA fxTrade account (practice or live). We support fxTrade Practice for paper trading and fxTrade Live for real capital. No MetaTrader required.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    What are the VPS requirements?
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-a">
+                    Any Linux VPS with Python 3.10+ and 512MB RAM. We recommend a $5&ndash;$12/month DigitalOcean or Vultr droplet. The bot runs as a systemd service with automatic restart on failure and auto-start on reboot. We help you set everything up.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Can I run this on my personal computer?
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-a">
+                    Technically yes, but we strongly recommend a VPS for 24/5 uptime. The forex market runs around the clock during the week. Closing your laptop means missing trades. A VPS ensures the bot never sleeps.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    How is the code protected?
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-a">
+                    Five layers of protection: compiled bytecode (no readable source), hardware-locked license keys, encrypted parameter vault, anti-tampering integrity checks, and debugger detection. Each license is bound to a single machine &mdash; it cannot be copied, shared, or reverse-engineered.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    Do you guarantee profits?
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-a">
+                    No. No trading system can guarantee profits. Forex trading carries significant risk, and past algorithmic performance does not guarantee future results. Omega Titan is a sophisticated analysis and execution tool &mdash; not a money printer. We recommend starting on a practice account.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    What makes this different from other trading bots?
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-a">
+                    Most bots rely on combinations of RSI, MACD, and moving average crossovers &mdash; strategies that stopped working consistently years ago. Omega Titan uses scientific models from entirely different fields: swarm intelligence, seismic wave analysis, computational immunology, and information entropy. These signals are fundamentally uncorrelated with conventional technical indicators.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    What pairs does it trade?
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-a">
+                    Currently optimized for EUR/USD, GBP/USD, USD/JPY, and GBP/JPY on the H1 and M30 timeframes. Each pair has individually calibrated parameters. Enterprise clients can request custom pair configurations.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Disclaimer ─── -->
+    <section style="padding-top:2rem;">
+        <div class="disclaimer">
+            <h4>Risk Disclosure &amp; Legal Disclaimer</h4>
+            <p>
+                Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors.
+                The high degree of leverage available can work against you as well as for you. Before deciding to trade
+                foreign exchange, you should carefully consider your investment objectives, level of experience, and risk
+                appetite. The possibility exists that you could sustain a loss of some or all of your initial investment.
+                You should be aware of all the risks associated with foreign exchange trading and seek advice from an
+                independent financial advisor if you have any doubts. Omega Titan is algorithmic trading software that
+                executes trades based on mathematical analysis. No trading system can guarantee profits or eliminate risk.
+                Past performance, whether backtested or live, is not indicative of future results. Use at your own risk.
+                This is not financial advice.
+            </p>
+        </div>
+    </section>
+
+    <!-- ─── CTA ─── -->
+    <section class="cta-section" id="contact">
+        <h2>Ready to Trade <span class="gradient-text" style="background:var(--gradient-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Beyond Indicators</span>?</h2>
+        <p>Start your 14-day trial. Full access to all 7 engines. No credit card required.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+            <a href="mailto:contact@omegatitan.io" class="btn-glow">Request Trial Access &rarr;</a>
+        </div>
+    </section>
+
+    <!-- ─── Footer ─── -->
+    <footer>
+        <div class="footer-logo">OMEGA TITAN</div>
+        <div class="footer-links">
+            <a href="#engines">Technology</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="mailto:contact@omegatitan.io">Contact</a>
+        </div>
+        <p>&copy; 2026 Omega Titan. All rights reserved. Software provided as-is. Not financial advice.</p>
+    </footer>
+
+</div>
+
+<!-- ─── Scripts ─── -->
+<script>
+// ── Particles ──
+(function() {
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+            this.r = Math.random() * 1.5 + 0.3;
+            this.alpha = Math.random() * 0.25 + 0.05;
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(59,130,246,${this.alpha})`;
+            ctx.fill();
+        }
+    }
+
+    const count = Math.min(80, Math.floor(w * h / 15000));
+    for (let i = 0; i < count; i++) particles.push(new Particle());
+
+    function drawLines() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(59,130,246,${0.04 * (1 - dist / 150)})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => { p.update(); p.draw(); });
+        drawLines();
+        requestAnimationFrame(animate);
+    }
+    animate();
+})();
+
+// ── Scroll reveal ──
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── Nav scroll effect ──
+window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ── Terminal animation ──
+(function() {
+    const lines = [
+        { text: '\u2713 License: full | Holder: Licensed User | Engines: 7', cls: 't-green' },
+        { text: '\u2713 Vault: decrypted \u2014 parameters loaded', cls: 't-blue' },
+        { text: '\u2713 Integrity: 58 modules verified', cls: 't-blue' },
+        { text: '\u2500'.repeat(52), cls: 't-dim' },
+        { text: 'HYDRA    GBP_USD  BUY  | Conf: 0.87 | Swarm: 5/5 agents', cls: 't-cyan' },
+        { text: 'CASCADE  USD_JPY  SELL | Phase: 2  | Wave sym: 0.91', cls: 't-purple' },
+        { text: 'SEISMIC  GBP_USD  BUY  | Richter: 2.8 | T-cells: 14', cls: 't-amber' },
+        { text: '\u2500'.repeat(52), cls: 't-dim' },
+        { text: '\u25B6 ENTRY   HYDRA GBP_USD BUY | Units: 12,000 | Heat: 2.1%', cls: 't-green' },
+        { text: '\u25B6 ENTRY   SEISMIC GBP_USD BUY | Units: 8,000 | Heat: 3.4%', cls: 't-green' },
+        { text: '', cls: 't-dim', cursor: true },
+    ];
+
+    const body = document.getElementById('termBody');
+    let i = 0;
+
+    function addLine() {
+        if (i >= lines.length) {
+            // Loop: clear and restart after pause
+            setTimeout(() => { body.innerHTML = ''; i = 0; addLine(); }, 4000);
+            return;
+        }
+        const line = lines[i];
+        const div = document.createElement('div');
+        div.className = 't-line ' + line.cls;
+        div.style.animationDelay = '0s';
+        div.textContent = line.text;
+        if (line.cursor) {
+            const cur = document.createElement('span');
+            cur.className = 'cursor-blink';
+            div.appendChild(cur);
+        }
+        body.appendChild(div);
+        i++;
+        setTimeout(addLine, 180);
+    }
+
+    // Start after hero loads
+    setTimeout(addLine, 1200);
+})();
+
+// ── FAQ toggle ──
+function toggleFaq(el) {
+    const item = el.parentElement;
+    const wasOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+}
+
+// ── Smooth scroll for anchor links ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
