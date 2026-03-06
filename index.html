@@ -1414,9 +1414,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 <!-- Chat Window -->
 <div class="chat-window" id="chatWindow">
     <div class="chat-header">
-        <div class="chat-avatar">OT</div>
+        <div class="chat-avatar">S</div>
         <div class="chat-header-info">
-            <h4>Omega Titan Support</h4>
+            <h4>Spig &mdash; Omega Titan AI</h4>
             <p>Online &mdash; typically replies instantly</p>
         </div>
     </div>
@@ -1435,176 +1435,247 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 // ═══════════════════════════════════════════════════════════════
 
 const KNOWLEDGE_BASE = [
-    {
-        keywords: ['hello', 'hi', 'hey', 'sup', 'good morning', 'good evening', 'howdy', 'greetings'],
-        response: "Hey there! Welcome to Omega Titan. I'm your support assistant and I know this system inside and out. How can I help you today?",
-        quickReplies: ['How does it work?', 'Pricing plans', 'Installation guide', 'VPS requirements']
-    },
-    {
-        keywords: ['what is omega', 'what does omega', 'tell me about', 'explain omega', 'what is this', 'overview'],
-        response: "Omega Titan is an <strong>autonomous algorithmic forex trading system</strong> with 7 independent engines. Unlike typical bots that use RSI/MACD crossovers, our engines are powered by:\n\n• <strong>Swarm Intelligence</strong> (HYDRA)\n• <strong>Seismic Wave Analysis</strong> (SEISMIC)\n• <strong>Computational Immunology</strong> (IMMUNO)\n• <strong>Wave Mechanics</strong> (CASCADE)\n• <strong>Smart Money Confluence</strong>\n• <strong>Momentum Detection</strong> (PULSE + BB)\n\nIt runs 24/5 on a VPS, connects to OANDA, and handles analysis, entries, trade management, and exits autonomously.",
-        quickReplies: ['How to install?', 'Pricing', 'Which pairs?']
-    },
-    {
-        keywords: ['how does it work', 'how it works', 'explain how', 'process', 'workflow'],
-        response: "Here's how Omega Titan works:\n\n<strong>1. Deploy</strong> — Upload to your VPS (we help with setup)\n<strong>2. License</strong> — Activate your hardware-locked license key\n<strong>3. Connect</strong> — Add your OANDA API credentials\n<strong>4. Run</strong> — The bot starts analyzing markets across 4 pairs\n\nEvery potential trade passes through <strong>13+ sequential filters</strong> (session, regime, entropy, bias, structure, scoring, risk) before execution. Multiple engines must agree before any trade is taken.",
-        quickReplies: ['VPS requirements', 'Which broker?', 'Pricing']
-    },
-    {
-        keywords: ['install', 'setup', 'set up', 'get started', 'start', 'deploy', 'installation'],
-        response: "Installation is straightforward — takes about <strong>15 minutes</strong>:\n\n<strong>Step 1:</strong> Get a Linux VPS ($5-12/month from DigitalOcean or Vultr)\n<strong>Step 2:</strong> Run our hardware ID command: <code>python3 -m omega_titan --hwid</code>\n<strong>Step 3:</strong> Send us your hardware ID — we generate your license\n<strong>Step 4:</strong> Upload the package to your VPS\n<strong>Step 5:</strong> Add your OANDA API key to the config\n<strong>Step 6:</strong> Start the service: <code>sudo systemctl start omega_titan</code>\n\nThe bot runs as a system service — auto-restarts on failure, starts on reboot. We provide full setup assistance with every plan.",
-        quickReplies: ['VPS requirements', 'OANDA setup', 'What is a hardware ID?']
-    },
-    {
-        keywords: ['vps', 'server', 'hosting', 'requirements', 'specs', 'what do i need', 'system req'],
-        response: "Omega Titan is lightweight. Here's what you need:\n\n<strong>Minimum VPS Specs:</strong>\n• OS: Ubuntu 20.04+ or Debian 11+\n• RAM: 512 MB\n• CPU: 1 vCPU\n• Storage: 1 GB\n• Python: 3.10+\n\n<strong>Recommended Providers:</strong>\n• <strong>DigitalOcean</strong> — $6/month (1GB RAM)\n• <strong>Vultr</strong> — $5/month\n• <strong>Hetzner</strong> — $4.50/month\n\nThe bot uses ~100MB RAM and minimal CPU. A $5-6/month VPS handles it perfectly. We help you set everything up.",
-        quickReplies: ['How to install?', 'Can I use my PC?', 'Pricing']
-    },
-    {
-        keywords: ['broker', 'oanda', 'which broker', 'account', 'trading account', 'mt4', 'mt5', 'metatrader'],
-        response: "Omega Titan connects directly to <strong>OANDA</strong> via their REST API.\n\n<strong>What you need:</strong>\n• An OANDA fxTrade account (practice or live)\n• Your API access token (generated in OANDA's dashboard)\n• Your account ID\n\n<strong>No MetaTrader required.</strong> We connect directly to OANDA's servers — faster execution, no middleman.\n\nWe recommend starting on an <strong>OANDA Practice account</strong> (free, uses virtual money) to see the system in action before committing real capital.",
-        quickReplies: ['How to get OANDA API key?', 'Is it free to practice?', 'Installation guide']
-    },
-    {
-        keywords: ['oanda api', 'api key', 'api token', 'access token', 'credentials'],
-        response: "To get your OANDA API credentials:\n\n<strong>1.</strong> Sign up at <a href='https://www.oanda.com' target='_blank'>oanda.com</a> (Practice or Live)\n<strong>2.</strong> Log into your OANDA account dashboard\n<strong>3.</strong> Go to <strong>Manage API Access</strong> (under My Account)\n<strong>4.</strong> Click <strong>Generate</strong> to create a personal access token\n<strong>5.</strong> Copy the token — you'll paste it into Omega Titan's config\n\nYour Account ID is visible in the top-left of the OANDA dashboard. Both the token and account ID go into your bot's configuration file.",
-        quickReplies: ['Practice vs Live?', 'Installation steps', 'Is it safe?']
-    },
-    {
-        keywords: ['price', 'pricing', 'cost', 'how much', 'subscription', 'plans', 'monthly', 'expensive', 'afford', 'pay', 'payment'],
-        response: "We offer three plans:\n\n<strong>Starter — $197/mo</strong>\n4 core engines (Confluence, BB Scalp, Pulse, M30 Trend), Telegram alerts, setup support\n\n<strong>Professional — $497/mo</strong> ⭐ Most Popular\nAll 7 engines including HYDRA, CASCADE, and SEISMIC. Priority support, VPS setup assistance, weekly performance reviews\n\n<strong>Enterprise — Custom Pricing</strong>\nWhite-label deployment, custom pair selection, parameter tuning, dedicated account manager, SLA guarantee\n\nAll plans include a <strong>14-day free trial</strong> with full access. No credit card required to start.",
-        quickReplies: ['Start free trial', 'Starter vs Pro?', 'Enterprise details']
-    },
-    {
-        keywords: ['trial', 'free trial', 'try', 'test', 'demo', 'free'],
-        response: "Yes! We offer a <strong>14-day free trial</strong> with full access to all 7 engines.\n\n<strong>What's included:</strong>\n• All 7 trading engines active\n• Full VPS setup assistance\n• Telegram trade notifications\n• Technical support\n\n<strong>No credit card required</strong> to start. We recommend running on an OANDA Practice account during the trial so you can see performance with zero risk.\n\nTo request access, email us at <strong>contact@omegatitan.io</strong> or click the 'Request Trial Access' button below.",
-        quickReplies: ['Request trial', 'How to install?', 'What pairs?']
-    },
-    {
-        keywords: ['starter vs pro', 'difference', 'which plan', 'compare plan', 'recommend'],
-        response: "Here's the key difference:\n\n<strong>Starter ($197/mo)</strong> gives you 4 engines:\n• Confluence, BB Scalp, Pulse, M30 Trend\n• These are solid, proven systems\n\n<strong>Professional ($497/mo)</strong> adds 3 advanced engines:\n• <strong>HYDRA</strong> — Swarm intelligence with 5 voting agents\n• <strong>CASCADE</strong> — Wave symmetry + structural breakouts\n• <strong>SEISMIC</strong> — Immune system + seismic wave detection\n\nThe Pro engines use <strong>fundamentally different signal sources</strong> that are uncorrelated with the Starter engines. More engines = more diversified signals = more opportunities.\n\nMy recommendation: <strong>start with Pro on the free trial</strong> — you can always downgrade if you decide 4 engines are enough.",
-        quickReplies: ['Start free trial', 'How does HYDRA work?', 'Pricing page']
-    },
-    {
-        keywords: ['pair', 'pairs', 'currency', 'currencies', 'which pair', 'eur', 'gbp', 'usd', 'jpy', 'forex pair'],
-        response: "Omega Titan currently trades <strong>4 major forex pairs</strong>:\n\n• <strong>EUR/USD</strong> — Euro / US Dollar\n• <strong>GBP/USD</strong> — British Pound / US Dollar\n• <strong>USD/JPY</strong> — US Dollar / Japanese Yen\n• <strong>GBP/JPY</strong> — British Pound / Japanese Yen\n\nEach pair has <strong>individually calibrated parameters</strong> — stop losses, take profits, and filters are optimized per pair, not one-size-fits-all.\n\nThe bot trades on <strong>H1 (hourly)</strong> and <strong>M30 (30-minute)</strong> timeframes. Enterprise clients can request custom pair configurations.",
-        quickReplies: ['Why these pairs?', 'What timeframes?', 'Enterprise plans']
-    },
-    {
-        keywords: ['timeframe', 'h1', 'm30', 'hourly', '30 min', 'scalp', 'swing'],
-        response: "Omega Titan operates on two timeframes:\n\n<strong>H1 (1-Hour)</strong>\n• Used by the Confluence engine (trend following)\n• Longer holds, fewer but higher-conviction trades\n• H4 bias alignment for directional filter\n\n<strong>M30 (30-Minute)</strong>\n• Used by HYDRA, SEISMIC, CASCADE, Pulse, BB, M30 Trend\n• More frequent opportunities\n• All gated by H1 trend quality scoring\n\nThe key insight: <strong>M30 entries are only taken when the H1 trend quality is high</strong>. This higher-timeframe gating is what separates Omega Titan from bots that overtrade on low timeframes.",
-        quickReplies: ['How many trades per day?', 'Risk management', 'How does gating work?']
-    },
-    {
-        keywords: ['how many trade', 'trade frequency', 'per day', 'per week', 'volume'],
-        response: "Trade frequency varies by market conditions, but typically:\n\n• <strong>5-15 trades per week</strong> across all 4 pairs\n• More active during London and New York sessions\n• Quieter during Asian session and ranging markets\n\nOmega Titan is <strong>not a high-frequency scalper</strong>. Every trade passes through 13+ quality filters. The bot <strong>waits</strong> for high-conviction setups rather than forcing trades in bad conditions.\n\nQuality over quantity is a core principle — fewer, better trades outperform frequent, mediocre ones.",
-        quickReplies: ['Risk management', 'Which sessions?', 'How does scoring work?']
-    },
-    {
-        keywords: ['risk', 'risk management', 'lot size', 'position size', 'drawdown', 'safe', 'money management'],
-        response: "Risk management is built into every layer:\n\n<strong>Position Sizing:</strong>\n• Dynamic — adapts to regime quality and volatility\n• Portfolio heat management prevents concentration\n• Correlated pair detection avoids doubling exposure\n\n<strong>Trade Protection:</strong>\n• Every trade has a stop loss (SL)\n• Breakeven lock after reaching a threshold\n• Trailing stop that follows profitable moves\n• Stall detection exits dead trades\n• Timeout exits prevent infinite holds\n\n<strong>You set your max risk per trade</strong> in the config. The bot respects it at all times. We recommend 1-2% per trade for most account sizes.",
-        quickReplies: ['What about drawdowns?', 'Recommended account size?', 'Protection details']
-    },
-    {
-        keywords: ['drawdown', 'lose', 'loss', 'losing', 'worst case', 'max loss'],
-        response: "Important to be transparent:\n\n<strong>No system eliminates losses.</strong> Omega Titan has multiple layers of protection, but drawdowns are a natural part of trading.\n\n<strong>How we manage risk:</strong>\n• Max risk per trade is configurable (we recommend 1-2%)\n• Portfolio heat limits prevent too much exposure\n• Correlation detection avoids doubling down on related pairs\n• Stall/timeout exits prevent large single-trade losses\n\nWe strongly recommend:\n1. <strong>Start on a Practice account</strong> first\n2. Never trade with money you can't afford to lose\n3. Keep position sizes conservative\n\nForex trading carries significant risk. Past performance doesn't guarantee future results.",
-        quickReplies: ['Risk disclaimer', 'Account size?', 'Practice account']
-    },
-    {
-        keywords: ['account size', 'minimum', 'how much money', 'capital', 'minimum deposit', 'balance'],
-        response: "OANDA has <strong>no minimum deposit</strong> — you can start with any amount.\n\nHowever, for practical purposes:\n\n• <strong>Practice Account:</strong> Free, uses virtual funds — start here\n• <strong>$500-1,000:</strong> Minimum for meaningful live trading\n• <strong>$5,000+:</strong> Recommended for comfortable position sizing\n• <strong>$10,000+:</strong> Ideal for running all 4 pairs with proper diversification\n\nSmaller accounts work but mean smaller position sizes. The bot's percentage-based risk management scales to any account size.\n\n<strong>Always start on a Practice account first</strong> to see how the system performs before committing real capital.",
-        quickReplies: ['How to open OANDA account?', 'Pricing plans', 'Free trial']
-    },
-    {
-        keywords: ['personal computer', 'my pc', 'my laptop', 'my mac', 'run locally', 'desktop', 'no vps', 'without vps'],
-        response: "Technically yes, but we <strong>strongly recommend a VPS</strong>. Here's why:\n\n<strong>The forex market runs 24/5.</strong> If you close your laptop, the bot stops. Missed trades, missed exits, unmanaged positions.\n\n<strong>A VPS costs $5-6/month</strong> and gives you:\n• 24/5 uptime — never miss a trade\n• Auto-restart on failure\n• Auto-start on reboot\n• No impact on your personal computer\n• Faster execution (closer to broker servers)\n\nThink of it this way: $6/month for reliable uptime is a tiny cost compared to missing trades because your laptop went to sleep.",
-        quickReplies: ['VPS recommendations', 'How to set up VPS?', 'Installation guide']
-    },
-    {
-        keywords: ['protect', 'code protect', 'reverse engineer', 'steal', 'copy', 'security', 'license', 'hardware lock'],
-        response: "Omega Titan has <strong>5 layers of code protection</strong>:\n\n<strong>1. Compiled Bytecode</strong> — No readable source code is ever distributed\n<strong>2. Hardware-Locked License</strong> — Each license is bound to your specific machine's fingerprint. Cannot be copied or transferred\n<strong>3. Encrypted Parameter Vault</strong> — All proprietary trading parameters are encrypted\n<strong>4. Integrity Verification</strong> — Detects any file tampering or modification\n<strong>5. Anti-Debugging</strong> — Detects reverse engineering attempts\n\nYour license key only works on <strong>your specific VPS</strong>. If you migrate servers, we issue a new license for the new machine.",
-        quickReplies: ['What is hardware ID?', 'Can I change servers?', 'Pricing']
-    },
-    {
-        keywords: ['hardware id', 'hwid', 'machine id', 'fingerprint', 'machine fingerprint'],
-        response: "Your Hardware ID is a unique fingerprint of your server. It's generated from:\n\n• Network interface\n• Hostname\n• CPU information\n• Operating system\n• Machine ID\n\n<strong>To get your Hardware ID:</strong>\n<code>python3 -m omega_titan --hwid</code>\n\nThis outputs a 16-character hex string (example: <code>d737ad0546498a86</code>). Send this to us and we generate a license key locked to that specific machine.\n\nThe HWID ensures your license <strong>cannot be shared or pirated</strong>. It only works on the machine it was generated for.",
-        quickReplies: ['Installation steps', 'Can I change servers?', 'License info']
-    },
-    {
-        keywords: ['change server', 'migrate', 'move server', 'new vps', 'new server', 'transfer'],
-        response: "Yes, you can migrate to a new server. Here's the process:\n\n<strong>1.</strong> Set up your new VPS\n<strong>2.</strong> Run <code>python3 -m omega_titan --hwid</code> on the new server\n<strong>3.</strong> Send us the new Hardware ID\n<strong>4.</strong> We issue a new license for the new machine\n<strong>5.</strong> Deploy and activate on the new server\n\nThe old license is automatically deactivated — each license works on <strong>one machine at a time</strong>. Server migrations are included free with all plans.",
-        quickReplies: ['VPS setup help', 'Installation guide', 'Contact support']
-    },
-    {
-        keywords: ['hydra', 'swarm', 'agents', 'voting'],
-        response: "<strong>HYDRA Engine — Swarm Intelligence</strong>\n\nHYDRA uses 5 autonomous agents that each analyze the market differently:\n\n• Each agent uses a unique analytical approach\n• Agents <strong>vote</strong> on whether to take a trade\n• A minimum consensus threshold must be met\n• After each trade, agents adjust their decision weights using <strong>Bayesian learning</strong>\n\nThis means HYDRA <strong>evolves over time</strong> — agents that make better predictions gain more voting power. It's inspired by biological swarm intelligence (how bees, ants, and fish make collective decisions).\n\nAvailable in the <strong>Professional plan</strong> and above.",
-        quickReplies: ['About SEISMIC', 'About IMMUNO', 'Pro plan details']
-    },
-    {
-        keywords: ['seismic', 'earthquake', 'p-wave', 'richter'],
-        response: "<strong>SEISMIC Engine — Seismic Wave Analysis</strong>\n\nInspired by how geologists detect earthquakes before they hit:\n\n• Detects market \"P-waves\" — early momentum signals that precede larger moves\n• Uses <strong>3 triangulation stations</strong> (velocity, acceleration, range expansion) to confirm direction\n• Measures signal \"Richter magnitude\" for position sizing\n• Combined with the IMMUNO system's T-cell memory\n\nJust like earthquake early warning systems detect tremors before the shaking starts, SEISMIC detects market momentum shifts before the big move.\n\nAvailable in the <strong>Professional plan</strong> and above.",
-        quickReplies: ['About HYDRA', 'About IMMUNO', 'Pro plan details']
-    },
-    {
-        keywords: ['immuno', 'immune', 't-cell', 'cytokine', 'biology'],
-        response: "<strong>IMMUNO Engine — Computational Immunology</strong>\n\nModeled after the human adaptive immune system:\n\n• <strong>T-Cell Memory</strong> — Remembers market patterns and whether they led to wins or losses\n• <strong>Antibody Formation</strong> — Builds defenses against setups that historically fail\n• <strong>Cytokine Storm Detection</strong> — When too many signals fire at once, it backs off (prevents overtrading)\n• Memory decays over time (like real immune memory) — stays adaptive\n\nThis is the system's <strong>self-protection mechanism</strong>. It literally learns from its own trading history to avoid repeating mistakes.\n\nAvailable in the <strong>Professional plan</strong> and above.",
-        quickReplies: ['About HYDRA', 'About CASCADE', 'Pro plan details']
-    },
-    {
-        keywords: ['cascade', 'wave', 'breakout', 'elliott'],
-        response: "<strong>CASCADE Engine — Wave Mechanics</strong>\n\nCombines structural breakout levels with wave symmetry:\n\n• Maps <strong>daily support/resistance clusters</strong> from higher-timeframe price action\n• Measures <strong>wave symmetry</strong> — how proportional current moves are to historical patterns\n• Phase-based trailing that captures full momentum moves\n• Especially powerful during structural breakout days\n\nWhen price breaks a key level AND wave symmetry confirms the move, CASCADE enters with a phase-based trailing system designed to ride the full move.\n\nAvailable in the <strong>Professional plan</strong> and above.",
-        quickReplies: ['About CONFLUENCE', 'About PULSE', 'Pro plan details']
-    },
-    {
-        keywords: ['confluence', 'smart money', 'order block', 'fvg', 'fair value', 'liquidity'],
-        response: "<strong>CONFLUENCE Engine — Smart Money Analysis</strong>\n\nThe backbone system with a 9-factor weighted scoring model:\n\n• Elliott Wave positioning\n• Fair Value Gaps (FVG)\n• Order Blocks (OB)\n• Liquidity Sweeps\n• Market Structure\n• And 4 additional proprietary factors\n\nEvery potential trade gets a <strong>confluence score</strong>. Only setups that pass the minimum score threshold are considered. Structure (FVG, OB, or Wave) is <strong>always required</strong> — the bot never trades without structural confirmation.\n\nAvailable in all plans.",
-        quickReplies: ['What timeframes?', 'Risk management', 'Pricing']
-    },
-    {
-        keywords: ['telegram', 'notification', 'alert', 'notify', 'phone'],
-        response: "Yes! Omega Titan sends <strong>real-time Telegram notifications</strong> for:\n\n• <strong>Trade Entries</strong> — pair, direction, engine, entry price, SL/TP\n• <strong>Trade Exits</strong> — profit/loss in pips, exit reason\n• <strong>System Status</strong> — startup confirmations, errors\n\nYou'll know about every trade the moment it happens, right on your phone.\n\n<strong>Setup is simple:</strong>\n1. Create a Telegram bot via @BotFather\n2. Get your chat ID\n3. Add both to Omega Titan's config\n\nWe walk you through this during setup. Takes 2 minutes.",
-        quickReplies: ['Installation guide', 'How to monitor?', 'VPS setup']
-    },
-    {
-        keywords: ['monitor', 'check', 'watch', 'logs', 'status', 'performance'],
-        response: "Several ways to monitor your bot:\n\n<strong>1. Telegram Alerts</strong> (recommended)\nReal-time notifications for every entry and exit\n\n<strong>2. Live Logs</strong>\n<code>journalctl -u omega_titan -f</code>\nWatch the bot's decision-making in real-time\n\n<strong>3. OANDA Dashboard</strong>\nSee open trades, account balance, and trade history directly in OANDA's web interface or mobile app\n\n<strong>4. Service Status</strong>\n<code>systemctl status omega_titan</code>\nCheck if the bot is running, uptime, memory usage\n\nPro plan users also get <strong>weekly performance reviews</strong> from our team.",
-        quickReplies: ['Telegram setup', 'VPS commands', 'Pro plan']
-    },
-    {
-        keywords: ['profit', 'guarantee', 'returns', 'how much can i make', 'performance', 'results', 'backtest'],
-        response: "I need to be upfront: <strong>we cannot and do not guarantee any profits.</strong>\n\nForex trading carries significant risk. No algorithm, no matter how sophisticated, can eliminate that risk or guarantee returns.\n\n<strong>What we can say:</strong>\n• The system uses 7 independently developed engines\n• Every trade passes 13+ quality filters\n• Risk management is built into every layer\n• The codebase is 12,000+ lines of tested logic\n\n<strong>What we recommend:</strong>\n• Start on an OANDA Practice account (free, virtual money)\n• Run the system for at least 30 days before considering live trading\n• Never trade with money you can't afford to lose\n\nPast performance is not indicative of future results.",
-        quickReplies: ['Start free trial', 'Risk management', 'Practice account']
-    },
-    {
-        keywords: ['practice', 'paper', 'demo', 'virtual', 'fake money', 'test account'],
-        response: "Yes — we <strong>strongly recommend</strong> starting with OANDA's Practice account:\n\n<strong>What is it?</strong>\nA free account with virtual money ($100K by default). Real market data, real execution — but no real money at risk.\n\n<strong>Why start here?</strong>\n• See how the bot performs with zero risk\n• Learn how the engines make decisions\n• Get comfortable with the setup and monitoring\n• Build confidence before going live\n\n<strong>How to get one:</strong>\nSign up at oanda.com → Select \"Practice Account\" → Free and instant.\n\nWe recommend running on Practice for at least <strong>30 days</strong> before considering live trading.",
-        quickReplies: ['How to sign up for OANDA?', 'Installation guide', 'Free trial']
-    },
-    {
-        keywords: ['enterprise', 'custom', 'white label', 'fund', 'prop', 'prop firm', 'institutional', 'bulk', 'multi account'],
-        response: "<strong>Enterprise Plan — Custom Pricing</strong>\n\nDesigned for fund managers, prop firms, and serious traders:\n\n• <strong>All 7 engines</strong> with full access\n• <strong>Custom pair selection</strong> — add or remove pairs\n• <strong>Parameter optimization</strong> — tuned for your risk profile\n• <strong>White-label branding</strong> — your brand, your clients\n• <strong>Multi-account deployment</strong> — run across multiple accounts\n• <strong>Dedicated account manager</strong>\n• <strong>SLA guarantee</strong> with on-call support\n• <strong>Custom engine development</strong> — we build engines to your specifications\n\nContact us at <strong>contact@omegatitan.io</strong> to discuss your requirements.",
-        quickReplies: ['Contact us', 'Pricing overview', 'How does licensing work?']
-    },
-    {
-        keywords: ['support', 'help', 'contact', 'email', 'reach', 'talk to human', 'real person'],
-        response: "You can reach our team at:\n\n<strong>Email:</strong> contact@omegatitan.io\n\n<strong>Support levels by plan:</strong>\n• <strong>Starter:</strong> Email support + setup assistance\n• <strong>Professional:</strong> Priority email support + VPS setup + weekly reviews\n• <strong>Enterprise:</strong> Dedicated account manager + on-call support + SLA\n\nDuring your free trial, you get <strong>full setup support</strong> including VPS configuration, OANDA connection, and Telegram notifications.\n\nI can answer most technical questions right here — try me!",
-        quickReplies: ['Installation help', 'Pricing', 'VPS setup']
-    },
-    {
-        keywords: ['session', 'trading session', 'london', 'new york', 'asian', 'tokyo', 'when does it trade'],
-        response: "Omega Titan is session-aware and trades primarily during:\n\n<strong>London Session</strong> (3 AM - 12 PM ET) — Most active\n<strong>New York Session</strong> (8 AM - 5 PM ET) — High volume\n<strong>London/NY Overlap</strong> (8 AM - 12 PM ET) — Peak activity\n\nThe <strong>Asian session is mostly filtered out</strong> for most engines due to lower volatility and choppier price action.\n\nThis is automatic — the bot knows which sessions are active and adjusts accordingly. You don't need to configure anything.",
-        quickReplies: ['How many trades per week?', 'Which pairs?', 'Risk management']
-    },
-    {
-        keywords: ['update', 'upgrade', 'new version', 'patch', 'maintenance'],
-        response: "Updates are included with all plans:\n\n<strong>How updates work:</strong>\n• We release updates as new packages\n• Upload to your VPS and restart the service\n• License key remains the same (unless you change servers)\n• All parameter improvements are included\n\n<strong>Pro and Enterprise</strong> users get priority access to new engines and features as they're developed.\n\nWe never push updates automatically — you control when to update. We notify you when a new version is available and provide upgrade instructions.",
-        quickReplies: ['Installation guide', 'Change servers?', 'Contact support']
-    },
-    {
-        keywords: ['different', 'special', 'unique', 'why omega', 'vs other', 'better', 'competitor', 'comparison'],
-        response: "What makes Omega Titan fundamentally different:\n\n<strong>1. Signal Sources</strong>\nTypical bots: RSI, MACD, Moving Averages\nOmega Titan: Entropy, GARCH, Swarm Intelligence, Immune Systems, Seismic Waves\n\n<strong>2. Scale</strong>\nTypical bots: 200-500 lines, 1-2 strategies\nOmega Titan: 12,000+ lines, 7 independent engines\n\n<strong>3. Adaptability</strong>\nTypical bots: Static rules forever\nOmega Titan: Bayesian learning evolves after every trade\n\n<strong>4. Protection</strong>\nTypical bots: Open source or basic .ex4\nOmega Titan: 5-layer encrypted, hardware-locked protection\n\n<strong>5. Quality Gating</strong>\nTypical bots: 2-3 entry conditions\nOmega Titan: 13+ sequential filters per trade\n\nWe're not iterating on the same old indicators — we're applying science from entirely different fields.",
-        quickReplies: ['View comparison table', 'Pricing', 'Start trial']
-    }
+    // ─── Greetings ───
+    { keywords: ['hello','hi','hey','sup','good morning','good evening','howdy','greetings','yo','whats up','wassup','hola','bonjour'],
+      response: "Hey! I'm <strong>Spig</strong>, the Omega Titan AI assistant. I know this system inside and out — installation, engines, pricing, risk management, troubleshooting, you name it. What can I help you with?",
+      quickReplies: ['How does it work?','Pricing plans','Installation guide','VPS requirements'] },
+    { keywords: ['thanks','thank you','thx','appreciate','cheers','ty'],
+      response: "You're welcome! Anything else you'd like to know about Omega Titan? I'm here 24/7.",
+      quickReplies: ['Pricing','Installation','Contact support'] },
+    { keywords: ['bye','goodbye','see you','later','cya','gtg'],
+      response: "Take care! If you have more questions later, I'll be right here. Good luck with your trading journey!",
+      quickReplies: ['Start free trial','Contact us'] },
+    { keywords: ['who are you','what are you','your name','whats your name','are you a bot','are you ai','are you real','are you human'],
+      response: "I'm <strong>Spig</strong> — the Omega Titan AI support assistant. I'm trained on every detail of the Omega Titan trading system: all 7 engines, installation procedures, pricing, troubleshooting, risk management, and more.\n\nI'm not a generic chatbot — I specifically know this product. Try asking me anything technical!",
+      quickReplies: ['What is Omega Titan?','How does it work?','Pricing'] },
+
+    // ─── Overview ───
+    { keywords: ['what is omega','what does omega','tell me about','explain omega','what is this','overview','describe'],
+      response: "Omega Titan is an <strong>autonomous algorithmic forex trading system</strong> with 7 independent engines. Unlike typical bots that use RSI/MACD crossovers, our engines are powered by:\n\n• <strong>Swarm Intelligence</strong> (HYDRA)\n• <strong>Seismic Wave Analysis</strong> (SEISMIC)\n• <strong>Computational Immunology</strong> (IMMUNO)\n• <strong>Wave Mechanics</strong> (CASCADE)\n• <strong>Smart Money Confluence</strong>\n• <strong>Momentum Detection</strong> (PULSE + BB)\n\nIt runs 24/5 on a VPS, connects to OANDA, and handles analysis, entries, trade management, and exits completely autonomously. The codebase is <strong>12,000+ lines</strong> of proprietary logic.",
+      quickReplies: ['How to install?','Pricing','Which pairs?'] },
+    { keywords: ['how does it work','how it works','explain how','process','workflow'],
+      response: "Here's how Omega Titan works:\n\n<strong>1. Deploy</strong> — Upload to your VPS (we help with setup)\n<strong>2. License</strong> — Activate your hardware-locked license key\n<strong>3. Connect</strong> — Add your OANDA API credentials\n<strong>4. Run</strong> — The bot starts analyzing markets across 4 pairs\n\nEvery potential trade passes through <strong>13+ sequential filters</strong> (session, regime, entropy, bias, structure, scoring, risk) before execution. Multiple engines must agree before any trade is taken.",
+      quickReplies: ['VPS requirements','Which broker?','Pricing'] },
+    { keywords: ['who made','who built','who created','developer','team','company','founder'],
+      response: "Omega Titan was built by a dedicated team of quantitative developers and forex traders. The system represents <strong>months of research</strong> combining fields like swarm intelligence, computational biology, and seismic wave analysis — areas that have never been applied to forex before.\n\nThe codebase spans <strong>12,000+ lines across 44 modules</strong>, with each engine independently developed and rigorously tested.",
+      quickReplies: ['What makes it unique?','Pricing','Start trial'] },
+
+    // ─── Installation & Setup ───
+    { keywords: ['install','setup','set up','get started','start','deploy','installation','onboard'],
+      response: "Installation takes about <strong>15 minutes</strong>:\n\n<strong>Step 1:</strong> Get a Linux VPS ($5-12/mo from DigitalOcean or Vultr)\n<strong>Step 2:</strong> Run our hardware ID command:\n<code>python3 -m omega_titan --hwid</code>\n<strong>Step 3:</strong> Send us your hardware ID — we generate your license\n<strong>Step 4:</strong> Upload the package to your VPS\n<strong>Step 5:</strong> Add your OANDA API key to the config\n<strong>Step 6:</strong> Start the service:\n<code>sudo systemctl start omega_titan</code>\n\nThe bot runs as a systemd service — auto-restarts on failure, starts on reboot. We provide full setup assistance with <strong>every plan</strong>.",
+      quickReplies: ['VPS requirements','OANDA setup','What is a hardware ID?'] },
+    { keywords: ['config','configuration','configure','settings','config file','env','environment'],
+      response: "The configuration file is simple. You'll need to set:\n\n<strong>Required:</strong>\n• <code>OANDA_TOKEN</code> — Your API access token\n• <code>OANDA_ACCOUNT</code> — Your account ID\n• <code>ENVIRONMENT</code> — 'practice' or 'live'\n\n<strong>Optional (pre-configured):</strong>\n• Risk per trade (default: 1%)\n• Telegram bot token + chat ID (for notifications)\n• Pairs to trade (default: all 4)\n\nWe walk you through every field during setup. The defaults work great out of the box — most users only need to add their OANDA credentials and Telegram info.",
+      quickReplies: ['OANDA API setup','Telegram setup','Risk settings'] },
+    { keywords: ['systemd','service','daemon','auto start','restart','boot','systemctl'],
+      response: "Omega Titan runs as a <strong>systemd service</strong> on Linux:\n\n<strong>Key commands:</strong>\n• Start: <code>sudo systemctl start omega_titan</code>\n• Stop: <code>sudo systemctl stop omega_titan</code>\n• Status: <code>systemctl status omega_titan</code>\n• Logs: <code>journalctl -u omega_titan -f</code>\n• Enable on boot: <code>sudo systemctl enable omega_titan</code>\n\n<strong>Built-in protections:</strong>\n• Auto-restart if the process crashes (30-second delay)\n• Automatic start on server reboot\n• Memory limit: 512MB\n• Runs as a background daemon — no screen/tmux needed",
+      quickReplies: ['View logs','Troubleshoot errors','VPS setup'] },
+    { keywords: ['uninstall','remove','delete','cancel subscription','stop service'],
+      response: "To stop and uninstall:\n\n<strong>Stop the bot:</strong>\n<code>sudo systemctl stop omega_titan</code>\n<code>sudo systemctl disable omega_titan</code>\n\n<strong>Remove files:</strong>\n<code>sudo rm /etc/systemd/system/omega_titan.service</code>\n<code>sudo rm -rf /root/omega</code>\n<code>sudo systemctl daemon-reload</code>\n\nTo cancel your subscription, email <strong>contact@omegatitan.io</strong>. No lock-in contracts — cancel anytime.\n\n<strong>Note:</strong> Close any open trades in your OANDA account before stopping the bot, or they'll remain open without management.",
+      quickReplies: ['Contact support','Pricing','Open trades?'] },
+
+    // ─── VPS ───
+    { keywords: ['vps','server','hosting','requirements','specs','what do i need','system req','linux'],
+      response: "Omega Titan is lightweight. Here's what you need:\n\n<strong>Minimum VPS Specs:</strong>\n• OS: Ubuntu 20.04+ or Debian 11+\n• RAM: 512 MB\n• CPU: 1 vCPU\n• Storage: 1 GB\n• Python: 3.10+\n\n<strong>Recommended Providers:</strong>\n• <strong>DigitalOcean</strong> — $6/mo (1GB RAM)\n• <strong>Vultr</strong> — $5/mo\n• <strong>Hetzner</strong> — $4.50/mo\n• <strong>Linode</strong> — $5/mo\n\nThe bot uses ~100MB RAM and minimal CPU. A $5-6/mo VPS handles it perfectly.",
+      quickReplies: ['How to install?','Can I use my PC?','DigitalOcean setup'] },
+    { keywords: ['digitalocean','digital ocean','droplet','do droplet'],
+      response: "Setting up a <strong>DigitalOcean droplet</strong>:\n\n<strong>1.</strong> Create account at digitalocean.com\n<strong>2.</strong> Click <strong>Create Droplet</strong>\n<strong>3.</strong> Choose <strong>Ubuntu 22.04 LTS</strong>\n<strong>4.</strong> Select <strong>Basic plan — $6/mo</strong> (1GB RAM, 1 vCPU)\n<strong>5.</strong> Choose a region (New York or London recommended)\n<strong>6.</strong> Add your SSH key (or use password auth)\n<strong>7.</strong> Click <strong>Create</strong>\n\nYou'll get an IP address. SSH in with:\n<code>ssh root@YOUR_IP_ADDRESS</code>\n\nThen follow our installation guide. We help with all of this!",
+      quickReplies: ['Installation steps','Other VPS options','SSH help'] },
+    { keywords: ['ssh','connect to server','terminal','putty','command line'],
+      response: "Connecting to your VPS via SSH:\n\n<strong>Mac/Linux:</strong>\nOpen Terminal and run:\n<code>ssh root@YOUR_SERVER_IP</code>\n\n<strong>Windows:</strong>\nUse <strong>PuTTY</strong> (free) or Windows Terminal:\n<code>ssh root@YOUR_SERVER_IP</code>\n\n<strong>First time?</strong> Type 'yes' when asked about fingerprint, then enter your password.\n\nOnce connected, you can run all Omega Titan installation commands. We guide you through every step during setup.",
+      quickReplies: ['Installation guide','VPS providers','Contact support'] },
+    { keywords: ['personal computer','my pc','my laptop','my mac','run locally','desktop','no vps','without vps','windows','macos'],
+      response: "Technically yes, but we <strong>strongly recommend a VPS</strong>. Here's why:\n\n<strong>The forex market runs 24/5.</strong> If you close your laptop, the bot stops. Missed trades, missed exits, unmanaged positions.\n\n<strong>A VPS costs $5-6/month</strong> and gives you:\n• 24/5 uptime — never miss a trade\n• Auto-restart on failure\n• Auto-start on reboot\n• No impact on your personal computer\n• Faster execution (closer to broker servers)\n\nFor Windows users: The bot is designed for Linux. Running on Windows requires WSL2 and won't have systemd auto-restart. A Linux VPS is the right call.",
+      quickReplies: ['VPS recommendations','DigitalOcean setup','Installation guide'] },
+
+    // ─── Broker & OANDA ───
+    { keywords: ['broker','oanda','which broker','account','trading account','mt4','mt5','metatrader'],
+      response: "Omega Titan connects directly to <strong>OANDA</strong> via their REST API.\n\n<strong>What you need:</strong>\n• An OANDA fxTrade account (practice or live)\n• Your API access token\n• Your account ID\n\n<strong>No MetaTrader required.</strong> We connect directly to OANDA's servers — faster execution, no middleman.\n\nWe recommend starting on an <strong>OANDA Practice account</strong> (free, virtual money) to see the system in action before committing real capital.\n\n<strong>Supported:</strong> OANDA fxTrade (US, UK, EU, Asia-Pacific)\n<strong>Not supported:</strong> OANDA Japan, or any other broker",
+      quickReplies: ['OANDA API key','Practice account','Other brokers?'] },
+    { keywords: ['oanda api','api key','api token','access token','credentials'],
+      response: "To get your OANDA API credentials:\n\n<strong>1.</strong> Sign up at <a href='https://www.oanda.com' target='_blank'>oanda.com</a> (Practice or Live)\n<strong>2.</strong> Log into your OANDA dashboard\n<strong>3.</strong> Go to <strong>Manage API Access</strong> (under My Account or My Services)\n<strong>4.</strong> Click <strong>Generate</strong> to create a personal access token\n<strong>5.</strong> Copy the token — you'll paste it into Omega Titan's config\n\nYour Account ID is visible in the account selector (format: XXX-XXX-XXXXXXX-XXX). Both go into your configuration file.\n\n<strong>Important:</strong> Never share your API token with anyone. We never ask for it.",
+      quickReplies: ['Practice vs Live?','Installation steps','Is it safe?'] },
+    { keywords: ['other broker','different broker','not oanda','ic markets','pepperstone','forex.com','interactive brokers','ibkr','fxcm'],
+      response: "Currently, Omega Titan <strong>only supports OANDA</strong> via their REST API.\n\n<strong>Why OANDA?</strong>\n• Reliable REST API with excellent documentation\n• No minimum deposit\n• Free practice accounts with real market data\n• Regulated in major jurisdictions (US, UK, EU, Japan, Australia)\n• Competitive spreads on major pairs\n\nWe may add support for additional brokers (Interactive Brokers, cTrader APIs) in future updates. Enterprise clients can request custom broker integrations.\n\nFor now, OANDA is the only supported option.",
+      quickReplies: ['Sign up for OANDA','Enterprise plans','Pricing'] },
+    { keywords: ['spread','commission','trading cost','execution','slippage','fill'],
+      response: "Omega Titan uses <strong>market orders</strong> for execution via OANDA's REST API.\n\n<strong>OANDA's typical spreads:</strong>\n• EUR/USD: ~1.1 pips\n• GBP/USD: ~1.4 pips\n• USD/JPY: ~1.2 pips\n• GBP/JPY: ~2.2 pips\n\n<strong>No separate commissions</strong> on OANDA's standard accounts — cost is built into the spread.\n\nThe bot's parameters are calibrated <strong>with spreads factored in</strong>. Stop losses, take profits, and breakeven thresholds all account for typical spread costs.\n\nExecution is generally fast — OANDA's REST API typically fills within milliseconds.",
+      quickReplies: ['Risk management','Which pairs?','Pricing'] },
+    { keywords: ['leverage','margin','lot','lots','position size','units'],
+      response: "Omega Titan uses <strong>dynamic position sizing</strong> based on your risk settings:\n\n<strong>How it works:</strong>\n• You set your risk per trade (e.g., 1% of account)\n• The bot calculates the correct position size based on the stop loss distance\n• Sizes automatically scale with your account balance\n\n<strong>OANDA leverage:</strong>\n• US: Up to 50:1 (major pairs)\n• UK/EU: Up to 30:1 (retail clients)\n• Australia: Up to 30:1\n\nThe bot respects your account's available margin. It won't open positions that would exceed your margin limits. We recommend <strong>conservative leverage</strong> — higher leverage amplifies both gains AND losses.",
+      quickReplies: ['Risk management','Account size','Position sizing'] },
+
+    // ─── Pricing ───
+    { keywords: ['price','pricing','cost','how much','subscription','plans','monthly','expensive','afford','pay','payment','money'],
+      response: "We offer three plans:\n\n<strong>Starter — $197/mo</strong>\n4 core engines (Confluence, BB Scalp, Pulse, M30 Trend), Telegram alerts, setup support\n\n<strong>Professional — $497/mo</strong> ⭐ Most Popular\nAll 7 engines including HYDRA, CASCADE, and SEISMIC. Priority support, VPS setup, weekly reviews\n\n<strong>Enterprise — Custom Pricing</strong>\nWhite-label, custom pairs, parameter tuning, dedicated account manager, SLA guarantee\n\nAll plans include a <strong>14-day free trial</strong> with full access. No credit card required to start.",
+      quickReplies: ['Start free trial','Starter vs Pro?','Enterprise details'] },
+    { keywords: ['trial','free trial','try','test','demo','free'],
+      response: "Yes! We offer a <strong>14-day free trial</strong> with full access to all 7 engines.\n\n<strong>What's included:</strong>\n• All 7 trading engines active\n• Full VPS setup assistance\n• Telegram trade notifications\n• Technical support\n\n<strong>No credit card required.</strong> We recommend running on an OANDA Practice account during the trial — zero financial risk.\n\nTo request access, email <strong>contact@omegatitan.io</strong> or click 'Request Trial Access' on this page.",
+      quickReplies: ['Request trial','How to install?','What pairs?'] },
+    { keywords: ['starter vs pro','difference','which plan','compare plan','recommend','best plan'],
+      response: "Here's the key difference:\n\n<strong>Starter ($197/mo)</strong> — 4 engines:\nConfluence, BB Scalp, Pulse, M30 Trend. Solid, proven systems.\n\n<strong>Professional ($497/mo)</strong> — adds 3 advanced engines:\n• <strong>HYDRA</strong> — Swarm intelligence with 5 voting agents\n• <strong>CASCADE</strong> — Wave symmetry + structural breakouts\n• <strong>SEISMIC</strong> — Immune system + seismic wave detection\n\nThe Pro engines use <strong>fundamentally different signal sources</strong> uncorrelated with the Starter engines. More engines = more diversified signals = more opportunities.\n\nMy recommendation: <strong>start with Pro on the free trial</strong> — you can always downgrade.",
+      quickReplies: ['Start free trial','How does HYDRA work?','Enterprise'] },
+    { keywords: ['refund','money back','cancel','cancellation','no contract'],
+      response: "<strong>No long-term contracts.</strong> Cancel anytime.\n\n• Monthly billing — no annual commitments required\n• Cancel before your next billing date to avoid charges\n• No cancellation fees\n• Your bot continues running until the end of your paid period\n\n<strong>14-day free trial:</strong> If you're not impressed during the trial, simply don't subscribe. No credit card needed to try.\n\nTo cancel, email <strong>contact@omegatitan.io</strong>. We process cancellations same day.",
+      quickReplies: ['Start trial','Pricing','Contact support'] },
+    { keywords: ['annual','yearly','discount','save','deal','coupon','promo'],
+      response: "We currently offer monthly billing. <strong>Annual plans with discounts</strong> are coming soon.\n\nIn the meantime, the best deal is:\n• Start with the <strong>14-day free trial</strong> (no credit card)\n• If you love it, the Professional plan at $497/mo gives you all 7 engines\n\nEnterprise clients can negotiate custom billing terms including quarterly and annual options.\n\nJoin our mailing list at <strong>contact@omegatitan.io</strong> to be notified when annual pricing launches.",
+      quickReplies: ['Free trial','Enterprise plans','Pricing overview'] },
+
+    // ─── Pairs & Timeframes ───
+    { keywords: ['pair','pairs','currency','currencies','which pair','forex pair','instrument'],
+      response: "Omega Titan trades <strong>4 major forex pairs</strong>:\n\n• <strong>EUR/USD</strong> — Euro / US Dollar (H1 only)\n• <strong>GBP/USD</strong> — British Pound / US Dollar (H1 + M30)\n• <strong>USD/JPY</strong> — US Dollar / Japanese Yen (H1 + M30)\n• <strong>GBP/JPY</strong> — British Pound / Japanese Yen (M30)\n\nEach pair has <strong>individually calibrated parameters</strong> — stop losses, take profits, and filters are optimized per pair, not one-size-fits-all.\n\nEnterprise clients can request custom pair configurations.",
+      quickReplies: ['Why these pairs?','Timeframes','Enterprise plans'] },
+    { keywords: ['why these pairs','pair selection','aud','cad','nzd','chf','gold','crypto','bitcoin','stock','indices'],
+      response: "We chose these 4 pairs after <strong>extensive testing</strong>:\n\n• <strong>EUR/USD</strong> — Most liquid pair globally, clean H1 trends\n• <strong>GBP/USD</strong> — High volatility, excellent for momentum engines\n• <strong>USD/JPY</strong> — Clean trends, strong carry trade dynamics\n• <strong>GBP/JPY</strong> — Highest volatility, biggest pip moves\n\n<strong>Why not others?</strong>\n• AUD/USD was tested but showed inconsistent results — excluded\n• CHF/CAD/NZD pairs had insufficient edge to justify inclusion\n\n<strong>No crypto, stocks, or indices</strong> — Omega Titan is purpose-built for forex.\n\nEnterprise clients can request custom pair testing and integration.",
+      quickReplies: ['Timeframes','How many trades?','Enterprise'] },
+    { keywords: ['timeframe','h1','m30','hourly','30 min','scalp','swing','h4','m15','daily'],
+      response: "Omega Titan operates on two timeframes:\n\n<strong>H1 (1-Hour)</strong>\n• Used by: Confluence engine\n• Longer holds, fewer but higher-conviction trades\n• H4 bias alignment for directional filter\n\n<strong>M30 (30-Minute)</strong>\n• Used by: HYDRA, SEISMIC, CASCADE, Pulse, BB, M30 Trend\n• More frequent opportunities\n• All gated by H1 trend quality scoring\n\n<strong>Not used:</strong> M15 was tested and found too noisy. Daily is used for structural analysis but not for entries.\n\nThe key insight: <strong>M30 entries are only taken when H1 trend quality is high.</strong>",
+      quickReplies: ['Trade frequency','Risk management','How does gating work?'] },
+
+    // ─── Trading Details ───
+    { keywords: ['how many trade','trade frequency','per day','per week','volume','often'],
+      response: "Trade frequency varies by market conditions:\n\n• <strong>5-15 trades per week</strong> across all 4 pairs\n• More active during London and New York sessions\n• Quieter during Asian session and ranging markets\n• Some weeks may have 20+ trades, others only 3-4\n\nOmega Titan is <strong>not a scalper</strong>. Every trade passes through 13+ quality filters. The bot <strong>waits</strong> for high-conviction setups rather than forcing trades.\n\nQuality over quantity — fewer, better trades consistently outperform frequent, mediocre ones.",
+      quickReplies: ['Risk management','Which sessions?','Scoring system'] },
+    { keywords: ['stop loss','sl','take profit','tp','exit','close trade','target'],
+      response: "Every trade has carefully calibrated exits:\n\n<strong>Stop Loss (SL):</strong>\n• H1 trades: 15 pip minimum floor\n• M30 trades: 20 pip minimum floor\n• Dynamically sized based on ATR and structure\n\n<strong>Take Profit (TP):</strong>\n• Varies by engine and pair\n• Per-pair calibration (e.g., GBP/USD tolerates wider TP)\n• Cascade mode uses extended trailing for big moves\n\n<strong>Additional exits:</strong>\n• Breakeven lock after threshold reached\n• Trailing stop follows profitable moves\n• Stall detection exits trades going nowhere\n• Timeout exits prevent infinite holds\n\nYou never need to manually manage trades.",
+      quickReplies: ['Breakeven system','Risk management','Trade frequency'] },
+    { keywords: ['breakeven','be','trailing','trail stop','lock','protect profit'],
+      response: "<strong>Breakeven & Trailing System:</strong>\n\nOnce a trade moves in your favor:\n\n<strong>1. Breakeven Lock</strong>\n• When price moves X pips in profit, the stop loss moves to breakeven (+ small buffer)\n• This means you can't lose on the trade anymore\n\n<strong>2. Trailing Stop</strong>\n• After breakeven is locked, the stop trails behind price\n• Captures more profit as the trade continues in your favor\n• Each engine has different trail settings optimized for its trade style\n\n<strong>3. Stall Detection</strong>\n• If a trade stalls (limited progress after several candles), the bot exits early\n• Prevents tying up capital in dead trades\n\nAll of this is automatic — no manual intervention needed.",
+      quickReplies: ['Stop loss details','Risk management','How engines work'] },
+    { keywords: ['gating','gate','filter','quality','h1 quality','trend quality','score','scoring','confluence score'],
+      response: "<strong>Quality Gating System:</strong>\n\nThis is one of Omega Titan's most important innovations.\n\n<strong>H1 Trend Quality Score (0-10):</strong>\nBefore any M30 engine can take a trade, it checks the H1 trend quality. This score measures:\n• Trend strength and direction\n• Momentum alignment\n• Structure confirmation\n• Regime clarity\n\n<strong>Minimum thresholds:</strong>\n• BB Scalp requires H1 quality >= 7\n• HYDRA/Pulse/Re-entry requires quality >= 6-8\n\n<strong>Confluence Score:</strong>\nThe backbone engine scores each setup 0-9+ across 9 factors. Minimum score of 5 (H1) or 8 (M30) is required.\n\nThis double-gating is what prevents overtrading in bad conditions.",
+      quickReplies: ['13 filters explained','Engine details','Trade frequency'] },
+    { keywords: ['13 filter','sequential filter','entry gate','how many check','quality check'],
+      response: "<strong>The 13+ Sequential Filters:</strong>\n\nEvery trade must pass ALL of these before execution:\n\n<strong>1.</strong> Session filter (active trading hours)\n<strong>2.</strong> Regime analysis (trending vs ranging)\n<strong>3.</strong> Entropy gate (chop/noise detection)\n<strong>4.</strong> H4 directional bias alignment\n<strong>5.</strong> H1 trend quality scoring\n<strong>6.</strong> Engine-specific signal generation\n<strong>7.</strong> Structure validation (FVG/OB/Wave required)\n<strong>8.</strong> Confluence score threshold\n<strong>9.</strong> Entry quality filters\n<strong>10.</strong> Duplicate/cooldown check\n<strong>11.</strong> Correlation check (avoid doubling exposure)\n<strong>12.</strong> Portfolio heat limit\n<strong>13.</strong> Risk sizing & margin check\n\nIf ANY gate fails, the trade is rejected. This is why quality is so high.",
+      quickReplies: ['How many trades?','Risk management','Compare to others'] },
+
+    // ─── Risk Management ───
+    { keywords: ['risk','risk management','lot size','position size','safe','money management'],
+      response: "Risk management is built into every layer:\n\n<strong>Position Sizing:</strong>\n• Dynamic — adapts to regime quality and volatility\n• Portfolio heat management prevents concentration\n• Correlated pair detection avoids doubling exposure\n\n<strong>Trade Protection:</strong>\n• Every trade has a stop loss\n• Breakeven lock after reaching threshold\n• Trailing stop follows profitable moves\n• Stall detection exits dead trades\n• Timeout exits prevent infinite holds\n\n<strong>You set your max risk per trade</strong> in the config. We recommend <strong>1-2% per trade</strong> for most account sizes. The bot respects this at all times.",
+      quickReplies: ['Drawdowns?','Account size?','Protection details'] },
+    { keywords: ['drawdown','lose','loss','losing','worst case','max loss','blow up'],
+      response: "Being transparent: <strong>no system eliminates losses.</strong>\n\n<strong>How we manage risk:</strong>\n• Max risk per trade is configurable (we recommend 1-2%)\n• Portfolio heat limits prevent too much total exposure\n• Correlation detection avoids doubling on related pairs\n• Stall/timeout exits prevent large single-trade losses\n• Breakeven locks protect winning trades\n\n<strong>We strongly recommend:</strong>\n1. Start on a <strong>Practice account</strong> first\n2. Never trade money you can't afford to lose\n3. Keep position sizes conservative\n4. Monitor performance weekly\n\nForex trading carries significant risk. Past performance doesn't guarantee future results.",
+      quickReplies: ['Practice account','Risk settings','Account size?'] },
+    { keywords: ['account size','minimum','how much money','capital','minimum deposit','balance','funding'],
+      response: "OANDA has <strong>no minimum deposit</strong> — you can start with any amount.\n\nPractical recommendations:\n\n• <strong>Practice Account:</strong> Free, virtual funds — start here\n• <strong>$500-1,000:</strong> Minimum for meaningful live trading\n• <strong>$5,000+:</strong> Recommended for comfortable position sizing\n• <strong>$10,000+:</strong> Ideal for full 4-pair diversification\n• <strong>$25,000+:</strong> Optimal for running all engines with proper risk\n\nThe bot's percentage-based risk management <strong>scales to any account size</strong>. Smaller accounts simply mean smaller position sizes.\n\n<strong>Always start on Practice first.</strong>",
+      quickReplies: ['OANDA account setup','Pricing','Free trial'] },
+    { keywords: ['portfolio heat','correlation','exposure','concentration','too many trade','overexposure'],
+      response: "<strong>Portfolio Heat Management:</strong>\n\nOmega Titan tracks total portfolio exposure in real-time:\n\n• <strong>Heat limit:</strong> Maximum total risk across all open positions\n• <strong>Correlation detection:</strong> GBP/USD and GBP/JPY are correlated — the bot knows this and limits combined exposure\n• <strong>Per-pair limits:</strong> Won't stack multiple trades on the same pair unless conditions warrant it\n\n<strong>Example:</strong> If you have 2% risk on a GBP/USD trade and 2% on a GBP/JPY trade, the bot recognizes the GBP correlation and may skip additional GBP entries.\n\nThis prevents the #1 killer of trading accounts: <strong>concentration risk</strong>.",
+      quickReplies: ['Risk per trade','Which pairs?','Trade frequency'] },
+
+    // ─── Engines (detailed) ───
+    { keywords: ['hydra','swarm','agents','voting','bayesian'],
+      response: "<strong>HYDRA Engine — Swarm Intelligence</strong>\n\nHYDRA uses 5 autonomous agents that each analyze the market differently:\n\n• Each agent uses a unique analytical model\n• Agents <strong>vote</strong> on whether to take a trade\n• Minimum consensus threshold must be met (0.75)\n• After each trade, agents adjust weights via <strong>Bayesian learning</strong>\n\n<strong>Key features:</strong>\n• ADX > 20 filter prevents trading in dead markets\n• Per-pair take profits (GBP/USD: 24 pips, USD/JPY: 16 pips)\n• GARCH-based stop loss calculation\n• Blocked in Asian session and ranging markets\n\nHYDRA <strong>evolves over time</strong> — better-predicting agents gain more voting power. Available in the <strong>Professional plan</strong>.",
+      quickReplies: ['About SEISMIC','About IMMUNO','Pro plan'] },
+    { keywords: ['seismic','earthquake','p-wave','richter','triangulation'],
+      response: "<strong>SEISMIC Engine — Seismic Wave Analysis</strong>\n\nInspired by earthquake early warning systems:\n\n• Detects market \"P-waves\" — 4 consecutive candles with conviction > 0.55\n• Uses <strong>3 triangulation stations</strong>: velocity, acceleration, range expansion\n• ALL 3 stations must confirm direction (triangulation required)\n• Measures signal \"Richter magnitude\" (minimum 1.5 required)\n\n<strong>Key parameters:</strong>\n• TP: 16 pips (tested 8-20, 16 is the sweet spot)\n• SL: Wave height × 0.9, range 8-12 pips\n• Breakeven: triggers at 5 pips, trails by 3\n• Blocked in Asian session, ranging regime, EUR/USD, and H1\n\nAvailable in the <strong>Professional plan</strong>.",
+      quickReplies: ['About HYDRA','About IMMUNO','Pro plan'] },
+    { keywords: ['immuno','immune','t-cell','cytokine','biology','antibody','memory'],
+      response: "<strong>IMMUNO Engine — Computational Immunology</strong>\n\nModeled after the human adaptive immune system:\n\n• <strong>T-Cell Memory:</strong> Ring buffer with 0.97^age decay — remembers patterns\n• <strong>Epitope Matching:</strong> Minimum 2 epitopes required for recognition\n• <strong>Antibody Formation:</strong> Builds defenses against losing setups\n• <strong>Cytokine Storm Detection:</strong> 3+ signals in 12 candles → backs off\n\nThe system literally <strong>learns from its own history</strong>. If a setup pattern led to losses before, the immune system recognizes it and blocks the trade.\n\nMemory decays over time (like real immunity) so it stays adaptive to changing markets.\n\nAvailable in the <strong>Professional plan</strong>.",
+      quickReplies: ['About HYDRA','About CASCADE','Pro plan'] },
+    { keywords: ['cascade','wave symmetry','structural breakout','phase trailing'],
+      response: "<strong>CASCADE Engine — Wave Mechanics</strong>\n\nCombines daily structural analysis with wave symmetry:\n\n• Maps <strong>daily support/resistance clusters</strong> from H1 data\n• Uses swing level detection + level clustering (40-pip radius)\n• Measures <strong>wave symmetry</strong> via Elliott Wave zigzag detection\n• Phase-based trailing captures extended momentum moves\n\n<strong>How it works:</strong>\n1. Identifies key daily levels from recent price action\n2. Waits for a structural breakout through clustered S/R\n3. Confirms wave symmetry alignment\n4. Enters with phase-based trailing to ride the full move\n\nEspecially powerful on breakout days. Available in the <strong>Professional plan</strong>.",
+      quickReplies: ['About CONFLUENCE','About PULSE','Pro plan'] },
+    { keywords: ['confluence','smart money','order block','fvg','fair value','liquidity','9 factor'],
+      response: "<strong>CONFLUENCE Engine — Smart Money Analysis</strong>\n\nThe backbone system with a 9-factor weighted scoring model:\n\n<strong>The 9 factors:</strong>\n1. Elliott Wave positioning\n2. Fair Value Gaps (FVG)\n3. Order Blocks (OB)\n4. Liquidity Sweeps\n5. Market Structure (BOS/CHoCH)\n6-9. Additional proprietary factors\n\n<strong>Minimum score: 5</strong> (H1) or <strong>8</strong> (M30)\n\nStructure (FVG, OB, or Wave) is <strong>always required</strong> — the bot never trades without structural confirmation. Bonus scoring for extra confluences.\n\n<strong>H1 settings:</strong> SL floor 15 pips, H4 bias filter, session windows\nAvailable in <strong>all plans</strong>.",
+      quickReplies: ['Timeframes','Risk management','Scoring system'] },
+    { keywords: ['pulse','ema','momentum','burst','pullback'],
+      response: "<strong>PULSE Engine — EMA8 Pullback + Momentum Burst</strong>\n\nTwo sub-modes:\n\n<strong>Pullback Mode:</strong>\n• H1 quality >= 7 required\n• Candle wicks below EMA8, bounce >= 1 pip\n• Strict RSI filters\n• TP = ATR × 0.7, SL = ATR × 0.5\n\n<strong>Burst Mode:</strong>\n• H1 quality >= 8 required (even stricter)\n• ADX > 25 with 4 qualifying candles\n• Body > 0.6× ATR, burst > 1.5× ATR\n• TP = burst_total × 0.3 (conservative)\n• SL = burst_total × 0.3\n\nBoth modes only fire when higher-timeframe conditions are pristine. Available in <strong>all plans</strong>.",
+      quickReplies: ['About BB Scalp','Scoring system','Pricing'] },
+    { keywords: ['bb','bollinger','scalp','bb scalp','mean reversion','ranging'],
+      response: "<strong>BB Scalp Engine — Bollinger Band Mean Reversion</strong>\n\nAdaptive Bollinger Band scalping gated by H1 quality:\n\n• <strong>H1 trend quality >= 7 required</strong> to fire\n• Identifies ranging M30 conditions\n• When ranging + strong H1: trades WITH H1 direction only\n• Fixed targets: <strong>8 pip TP, 10 pip SL</strong>\n\n<strong>Key insight:</strong> Most BB scalping bots trade both directions. Omega Titan only takes BB mean-reversion trades that align with the higher-timeframe trend. This dramatically improves win rate.\n\nAvailable in <strong>all plans</strong>.",
+      quickReplies: ['About PULSE','H1 quality gating','Pricing'] },
+    { keywords: ['m30 trend','trend following','re-entry','chain','cascade mode','extended'],
+      response: "<strong>M30 Trend Engine — Multi-Mode Trend Following</strong>\n\nThe workhorse engine with multiple entry modes:\n\n<strong>Extended Mode:</strong> Standard trend entries (the primary mode)\n<strong>Cascade Mode:</strong> Catches bigger moves (best performer)\n\n<strong>Settings:</strong>\n• Minimum confluence score: 8\n• SL floor: 20 pips\n• TP multiplier: 2.0\n\n<strong>Re-Entry Chain:</strong>\nAfter a profitable exit, the system can re-enter with 60% SL if H1 quality >= 6. This captures extended trends that continue after taking initial profit.\n\nAvailable in <strong>all plans</strong>.",
+      quickReplies: ['Cascade mode','Re-entry details','Pricing'] },
+    { keywords: ['regime','trending','ranging','market condition','choppy','volatile','adx'],
+      response: "<strong>Regime Analysis:</strong>\n\nOmega Titan continuously monitors market regime:\n\n<strong>Trending:</strong> Engines optimized for trends activate (Confluence, HYDRA, Cascade)\n<strong>Ranging:</strong> BB Scalp can engage (with H1 gating). Most engines back off.\n\n<strong>Signals used:</strong>\n• ADX for trend strength\n• Permutation Entropy for randomness/chop\n• Bollinger Band width for volatility\n• H1 trend quality score\n\n<strong>Key rule:</strong> SEISMIC, HYDRA, and most engines are <strong>blocked in ranging regimes</strong>. The bot doesn't force trades in choppy markets — it waits for clarity.\n\nThis regime awareness is a major edge over bots that trade regardless of conditions.",
+      quickReplies: ['Entropy explained','Trade frequency','13 filters'] },
+    { keywords: ['entropy','permutation entropy','randomness','noise','chop detection'],
+      response: "<strong>Permutation Entropy:</strong>\n\nA concept from information theory used to measure market randomness:\n\n• <strong>Low entropy</strong> = orderly, trending price action → good for trading\n• <strong>High entropy</strong> = random, choppy noise → avoid trading\n\nOmega Titan calculates permutation entropy on price sequences. When entropy is too high (market is essentially random), engines back off.\n\n<strong>HYDRA specifically uses PE < 0.82</strong> as a gate — if the market is too random, no trades are taken.\n\nThis is a concept from <strong>physics and neuroscience</strong> applied to financial markets. You won't find this in typical trading bots.",
+      quickReplies: ['GARCH explained','HYDRA details','What makes it unique?'] },
+    { keywords: ['garch','volatility','volatility model','conditional variance'],
+      response: "<strong>GARCH(1,1) Volatility Model:</strong>\n\nGeneralized Autoregressive Conditional Heteroskedasticity — used in quantitative finance:\n\n• Models how <strong>volatility clusters</strong> (big moves follow big moves)\n• Predicts near-future volatility from recent price action\n• Used by HYDRA to calculate dynamic stop losses\n\n<strong>How it's used:</strong>\n• SL = GARCH estimated volatility × 2.5\n• Range capped between 10-16 pips\n• Higher predicted volatility = wider stop loss\n\nThis means stop losses <strong>adapt to current market conditions</strong> instead of using fixed pip values. During calm markets, stops are tighter. During volatile markets, stops give more room.\n\nThis is the same model used by institutional quant desks.",
+      quickReplies: ['HYDRA details','Risk management','Entropy'] },
+
+    // ─── Monitoring & Notifications ───
+    { keywords: ['telegram','notification','alert','notify','phone','sms','discord'],
+      response: "Omega Titan sends <strong>real-time Telegram notifications</strong>:\n\n• <strong>Trade Entries:</strong> pair, direction, engine, price, SL/TP\n• <strong>Trade Exits:</strong> profit/loss in pips, exit reason\n• <strong>System Status:</strong> startup confirmations, errors\n\n<strong>Setup (2 minutes):</strong>\n1. Open Telegram, search @BotFather\n2. Send <code>/newbot</code>, follow prompts, get your bot token\n3. Send a message to your bot, then visit:\n<code>https://api.telegram.org/botYOUR_TOKEN/getUpdates</code>\n4. Find your chat_id in the response\n5. Add both to Omega Titan's config\n\nDiscord/SMS integration not available yet. Telegram is the only notification channel currently.",
+      quickReplies: ['Installation guide','Monitoring commands','VPS setup'] },
+    { keywords: ['monitor','check','watch','logs','status','performance','track'],
+      response: "Ways to monitor your bot:\n\n<strong>1. Telegram Alerts</strong> (recommended)\nReal-time notifications for every entry and exit\n\n<strong>2. Live Logs</strong>\n<code>journalctl -u omega_titan -f</code>\n\n<strong>3. OANDA Dashboard</strong>\nSee open trades, balance, and history in OANDA's web/mobile app\n\n<strong>4. Service Status</strong>\n<code>systemctl status omega_titan</code>\n\n<strong>5. Recent Trade Log</strong>\n<code>journalctl -u omega_titan --since '1 hour ago'</code>\n\nPro plan users also get <strong>weekly performance reviews</strong> from our team.",
+      quickReplies: ['Telegram setup','Troubleshooting','Pro plan'] },
+
+    // ─── Troubleshooting ───
+    { keywords: ['error','bug','crash','not working','problem','issue','broken','fail','troubleshoot','debug'],
+      response: "<strong>Common troubleshooting steps:</strong>\n\n<strong>1. Check if the bot is running:</strong>\n<code>systemctl status omega_titan</code>\n\n<strong>2. Check recent logs for errors:</strong>\n<code>journalctl -u omega_titan --since '30 min ago'</code>\n\n<strong>3. Common issues:</strong>\n• <strong>'License invalid'</strong> — Wrong hardware ID. Run <code>python3 -m omega_titan --hwid</code> and verify\n• <strong>'OANDA connection failed'</strong> — Check API token and account ID\n• <strong>'Rate limit'</strong> — Too many API calls, bot auto-retries\n• <strong>'No trades being placed'</strong> — Normal during low-quality conditions\n\n<strong>4. Restart the service:</strong>\n<code>sudo systemctl restart omega_titan</code>\n\nIf issues persist, email logs to <strong>contact@omegatitan.io</strong>.",
+      quickReplies: ['License issues','OANDA connection','Contact support'] },
+    { keywords: ['no trades','not trading','inactive','quiet','silent','nothing happening','why no trade'],
+      response: "<strong>No trades being placed? That might be normal.</strong>\n\nOmega Titan is <strong>highly selective</strong>. Here's why it might be quiet:\n\n• <strong>Asian session</strong> — Most engines are blocked during low-volatility hours\n• <strong>Ranging market</strong> — Engines back off when there's no clear trend\n• <strong>High entropy</strong> — Choppy markets trigger the noise filter\n• <strong>Low H1 quality</strong> — M30 engines won't fire if H1 isn't trending\n• <strong>Weekend/holiday</strong> — Forex markets are closed\n\n<strong>This is by design.</strong> The bot waits for high-conviction setups. Some days may have zero trades. That's the quality filter working.\n\nCheck your logs to confirm: <code>journalctl -u omega_titan -f</code>",
+      quickReplies: ['Trade frequency','How scoring works','Sessions'] },
+    { keywords: ['license issue','license invalid','license error','license expired','wrong license','activation'],
+      response: "<strong>License Troubleshooting:</strong>\n\n<strong>'License invalid' error:</strong>\n1. Verify your hardware ID: <code>python3 -m omega_titan --hwid</code>\n2. Compare it to the HWID in your license file\n3. If they don't match, your server has changed — contact us for a new license\n\n<strong>'License expired' error:</strong>\nYour subscription may have lapsed. Email <strong>contact@omegatitan.io</strong> to renew.\n\n<strong>'License file not found':</strong>\nEnsure <code>omega_vps.license</code> is in the correct directory (<code>/root/omega/</code>)\n\n<strong>Changed servers?</strong>\nLicenses are hardware-locked. If you moved to a new VPS, you need a new license. Send us your new HWID and we'll generate one.",
+      quickReplies: ['Hardware ID help','Change servers','Contact support'] },
+    { keywords: ['oanda error','connection error','api error','authentication','401','403','timeout'],
+      response: "<strong>OANDA Connection Issues:</strong>\n\n<strong>'401 Unauthorized':</strong>\n• Your API token is invalid or expired\n• Generate a new token in OANDA's dashboard → Manage API Access\n• Update the token in your config file\n\n<strong>'403 Forbidden':</strong>\n• Account might be restricted or disabled\n• Check your OANDA account status\n\n<strong>'Connection timeout':</strong>\n• Temporary network issue — bot auto-retries\n• Check VPS internet: <code>ping api-fxtrade.oanda.com</code>\n\n<strong>'Insufficient funds':</strong>\n• Account balance too low for the calculated position size\n• Reduce risk percentage or add funds\n\nAfter fixing, restart: <code>sudo systemctl restart omega_titan</code>",
+      quickReplies: ['OANDA API setup','VPS network','Contact support'] },
+    { keywords: ['open trade','stuck trade','manual close','close position','pending'],
+      response: "<strong>Managing open trades:</strong>\n\nOmega Titan manages all its trades automatically. But if you need to intervene:\n\n<strong>Close a trade manually:</strong>\nLog into your OANDA web platform or mobile app and close the position there. The bot will detect the closure on its next analysis cycle.\n\n<strong>Before stopping the bot:</strong>\nAlways check for open trades first:\n<code>journalctl -u omega_titan | grep 'OPEN'</code>\n\nIf you stop the bot with open trades, those positions will remain open in your OANDA account without management (no trailing stop, no breakeven locks).\n\n<strong>Recommendation:</strong> Wait for the bot to close all trades naturally before shutting down, or manually close them in OANDA.",
+      quickReplies: ['How to stop the bot','OANDA dashboard','Risk management'] },
+
+    // ─── Security & Licensing ───
+    { keywords: ['protect','code protect','reverse engineer','steal','copy','security','encryption'],
+      response: "Omega Titan has <strong>5 layers of code protection</strong>:\n\n<strong>1. Compiled Bytecode</strong> — No readable source code is distributed. All logic is pre-compiled.\n<strong>2. Hardware-Locked License</strong> — Each license is cryptographically bound to your machine's unique fingerprint\n<strong>3. Encrypted Parameter Vault</strong> — All proprietary trading parameters are encrypted with PBKDF2 + XOR stream cipher\n<strong>4. Integrity Verification</strong> — SHA256 manifest + HMAC signing detects any file tampering\n<strong>5. Anti-Debugging</strong> — Detects debuggers, trace hooks, and reverse engineering attempts\n\nYour license only works on <strong>your specific VPS</strong>. The code cannot be copied, shared, decompiled, or reverse-engineered.",
+      quickReplies: ['Hardware ID?','Change servers?','Pricing'] },
+    { keywords: ['hardware id','hwid','machine id','fingerprint','machine fingerprint'],
+      response: "Your Hardware ID is a unique fingerprint of your server, generated from:\n\n• Network MAC address\n• Hostname\n• CPU information\n• Operating system\n• Machine ID file\n\n<strong>Get your HWID:</strong>\n<code>python3 -m omega_titan --hwid</code>\n\nOutput: a 16-character hex string (e.g., <code>d737ad0546498a86</code>)\n\nSend this to us → we generate a license key locked to that specific machine. The HWID ensures your license <strong>cannot be shared or pirated</strong>.\n\n<strong>Note:</strong> If you reinstall the OS or change hardware, the HWID may change and you'll need a new license (free).",
+      quickReplies: ['Installation steps','Change servers?','License info'] },
+    { keywords: ['change server','migrate','move server','new vps','new server','transfer'],
+      response: "Yes, server migration is easy:\n\n<strong>1.</strong> Set up your new VPS\n<strong>2.</strong> Run <code>python3 -m omega_titan --hwid</code> on the new server\n<strong>3.</strong> Email us the new Hardware ID\n<strong>4.</strong> We issue a new license (same day)\n<strong>5.</strong> Deploy and activate on the new server\n\nThe old license automatically stops working. Each license works on <strong>one machine at a time</strong>.\n\nServer migrations are <strong>free with all plans</strong> — no extra charge.",
+      quickReplies: ['VPS setup help','Installation guide','Contact support'] },
+
+    // ─── Sessions & Schedule ───
+    { keywords: ['session','trading session','london','new york','asian','tokyo','when does it trade','schedule','hours','time'],
+      response: "Omega Titan is session-aware:\n\n<strong>London Session</strong> (3 AM - 12 PM ET) — Most active\n<strong>New York Session</strong> (8 AM - 5 PM ET) — High volume\n<strong>London/NY Overlap</strong> (8 AM - 12 PM ET) — Peak activity\n\n<strong>Asian Session</strong> — Mostly filtered out for most engines (low volatility, choppy action)\n\n<strong>Weekends:</strong> Forex markets closed (Fri 5PM ET → Sun 5PM ET)\n\nAll session handling is <strong>automatic</strong>. The bot knows when to trade and when to wait. You don't configure anything — just let it run 24/5.",
+      quickReplies: ['Trade frequency','Which pairs?','Risk management'] },
+
+    // ─── Comparison & Differentiators ───
+    { keywords: ['different','special','unique','why omega','vs other','better','competitor','comparison','edge','advantage'],
+      response: "What makes Omega Titan fundamentally different:\n\n<strong>1. Signal Sources</strong>\nTypical bots: RSI, MACD, Moving Averages\nOmega: Entropy, GARCH, Swarm, Immune Systems, Seismic Waves\n\n<strong>2. Scale</strong>\nTypical: 200-500 lines, 1-2 strategies\nOmega: 12,000+ lines, 7 independent engines\n\n<strong>3. Adaptability</strong>\nTypical: Static rules forever\nOmega: Bayesian learning evolves after every trade\n\n<strong>4. Quality</strong>\nTypical: 2-3 entry conditions\nOmega: 13+ sequential filters per trade\n\n<strong>5. Protection</strong>\nTypical: Open source / .ex4\nOmega: 5-layer encrypted, hardware-locked\n\nWe're applying science from entirely different fields, not recycling the same indicators.",
+      quickReplies: ['Comparison table','Pricing','Start trial'] },
+    { keywords: ['scam','legit','legitimate','trust','trustworthy','real','fake'],
+      response: "Valid concern — the trading bot space has a lot of scams. Here's how Omega Titan is different:\n\n<strong>What we DON'T do:</strong>\n• We don't promise guaranteed profits\n• We don't show fake backtest results\n• We don't require a large upfront payment\n• We don't ask for access to your broker account\n\n<strong>What we DO:</strong>\n• Offer a <strong>14-day free trial</strong> (no credit card)\n• Recommend starting on a <strong>Practice account</strong> (zero risk)\n• Provide <strong>full transparency</strong> about how the system works\n• Include a <strong>risk disclaimer</strong> on every page\n• Let you <strong>cancel anytime</strong> with no fees\n\nWe're confident enough to let you try before you buy. The system speaks for itself.",
+      quickReplies: ['Free trial','Risk disclaimer','Contact team'] },
+
+    // ─── General & Misc ───
+    { keywords: ['profit','guarantee','returns','how much can i make','performance','results','backtest','win rate'],
+      response: "Being upfront: <strong>we cannot and do not guarantee any profits.</strong>\n\nForex trading carries significant risk. No algorithm can eliminate that risk.\n\n<strong>What we can say:</strong>\n• 7 independently developed engines\n• 13+ quality filters per trade\n• Risk management at every layer\n• 12,000+ lines of rigorously tested logic\n• Dynamic adaptation via Bayesian learning\n\n<strong>What we recommend:</strong>\n• Start on OANDA Practice (free, virtual money)\n• Run for at least 30 days before considering live\n• Never trade money you can't afford to lose\n\n<strong>Past performance — backtested or live — is not indicative of future results.</strong>",
+      quickReplies: ['Start free trial','Practice account','Risk management'] },
+    { keywords: ['practice','paper','demo','virtual','fake money','test account','paper trade'],
+      response: "We <strong>strongly recommend</strong> starting with OANDA's Practice account:\n\n<strong>What is it?</strong>\n• Free account with $100K virtual money\n• Real market data, real execution\n• Zero financial risk\n\n<strong>How to get one:</strong>\n1. Go to oanda.com\n2. Click Sign Up → Practice Account\n3. Free and instant — no credit card\n\n<strong>Why start here?</strong>\n• See how all 7 engines perform\n• Learn the monitoring tools\n• Build confidence risk-free\n• Run for 30+ days before going live\n\nDuring your 14-day trial, we set everything up on Practice so you can evaluate with zero risk.",
+      quickReplies: ['OANDA signup','Installation guide','Free trial'] },
+    { keywords: ['enterprise','custom','white label','fund','prop','prop firm','institutional','bulk','multi account'],
+      response: "<strong>Enterprise Plan — Custom Pricing</strong>\n\nFor fund managers, prop firms, and serious traders:\n\n• All 7 engines with full access\n• Custom pair selection + testing\n• Parameter optimization for your risk profile\n• White-label branding (your brand, your clients)\n• Multi-account deployment\n• Dedicated account manager\n• SLA guarantee with on-call support\n• Custom engine development\n• Quarterly/annual billing available\n\nContact <strong>contact@omegatitan.io</strong> to discuss your requirements.",
+      quickReplies: ['Contact us','Pricing overview','How does licensing work?'] },
+    { keywords: ['support','help','contact','email','reach','talk to human','real person','customer service'],
+      response: "Reach our team at: <strong>contact@omegatitan.io</strong>\n\n<strong>Support by plan:</strong>\n• <strong>Trial:</strong> Full setup support included\n• <strong>Starter:</strong> Email support + setup assistance\n• <strong>Professional:</strong> Priority email + VPS setup + weekly reviews\n• <strong>Enterprise:</strong> Dedicated account manager + on-call + SLA\n\n<strong>Response time:</strong> Usually within a few hours during business days.\n\nI can answer most technical questions right here — try me! For account-specific issues, email is best.",
+      quickReplies: ['Installation help','Pricing','Troubleshooting'] },
+    { keywords: ['update','upgrade','new version','patch','maintenance','roadmap','future'],
+      response: "Updates are included with all plans:\n\n<strong>Current update process:</strong>\n1. We notify you when a new version is available\n2. Upload the new package to your VPS\n3. Restart the service\n4. License key stays the same\n\n<strong>Coming soon:</strong>\n• Additional broker support\n• Annual pricing with discounts\n• New engine development\n• Enhanced reporting dashboard\n\n<strong>Pro/Enterprise</strong> users get priority access to new features. We never push updates automatically — you control the timing.",
+      quickReplies: ['Installation guide','Enterprise plan','Contact'] },
+    { keywords: ['python','programming','language','code','source','technology','tech stack'],
+      response: "Omega Titan is built with:\n\n<strong>Language:</strong> Python 3.10+\n<strong>Architecture:</strong> 44 modules, 12,000+ lines\n<strong>API:</strong> OANDA REST API via oandapyV20\n<strong>Deployment:</strong> systemd service on Linux\n\n<strong>Key components:</strong>\n• 7 independent engine modules\n• Market structure analysis (FVG, OB, waves)\n• Regime detection (entropy, ADX, BB width)\n• Risk management system\n• 5-layer security system\n• Telegram notification system\n\n<strong>No source code is distributed</strong> — only compiled bytecode. The technology is proprietary and protected by multiple encryption layers.",
+      quickReplies: ['Code protection','How engines work','Pricing'] },
+    { keywords: ['forex','what is forex','foreign exchange','fx','currency trading','new to forex','beginner'],
+      response: "Quick forex primer:\n\n<strong>Forex (FX)</strong> = trading currency pairs. When you buy EUR/USD, you're buying Euros and selling US Dollars.\n\n<strong>Key concepts:</strong>\n• <strong>Pip</strong> — Smallest price unit (0.0001 for most pairs)\n• <strong>Spread</strong> — Cost to enter a trade (broker's fee)\n• <strong>Leverage</strong> — Trade larger positions with less capital\n• <strong>Long/Buy</strong> — Betting price goes up\n• <strong>Short/Sell</strong> — Betting price goes down\n\n<strong>Market hours:</strong> 24 hours, 5 days a week (Mon-Fri)\n\nOmega Titan handles all the complex analysis and execution. You don't need to be a forex expert — but we recommend learning the basics and starting on a <strong>Practice account</strong>.",
+      quickReplies: ['Practice account','How does the bot work?','Risk management'] },
+    { keywords: ['regulation','regulated','legal','compliant','sec','cftc','fca','license to trade'],
+      response: "Important clarifications:\n\n<strong>Omega Titan is software</strong> — a trading tool, not a financial service or investment fund.\n\n• We don't hold or manage your money\n• You control your own OANDA account\n• You set your own risk parameters\n• We don't provide financial advice\n\n<strong>OANDA</strong> (your broker) is regulated by:\n• CFTC/NFA (US)\n• FCA (UK)\n• IIROC (Canada)\n• ASIC (Australia)\n• MAS (Singapore)\n\nTrading bots/algorithms are legal in all major jurisdictions. You're simply automating your own trading decisions on your own account.",
+      quickReplies: ['Is it safe?','Risk disclaimer','Pricing'] },
+    { keywords: ['safe','data safe','privacy','data privacy','personal info','information safe'],
+      response: "<strong>Your data security:</strong>\n\n• <strong>API keys</strong> — Stored locally on YOUR VPS only. We never see or store them.\n• <strong>Trade data</strong> — Stays between your bot and OANDA. We have zero access.\n• <strong>License info</strong> — We only store your hardware ID and plan details.\n• <strong>No cloud dependency</strong> — The bot runs entirely on your server, no phone-home.\n\n<strong>We never:</strong>\n• Access your OANDA account\n• See your trades or balance\n• Store your API credentials\n• Share any data with third parties\n\nYour bot, your server, your data. We only provide the software and the license.",
+      quickReplies: ['Code protection','Installation','Contact'] }
 ];
 
 // ─── Fallback responses ───
@@ -1626,8 +1697,8 @@ function toggleChat() {
     if (firstOpen && chatOpen) {
         firstOpen = false;
         setTimeout(() => {
-            addBotMessage("Hey! I'm the Omega Titan assistant. I can help with installation, pricing, setup, engine details — anything about the system. What would you like to know?",
-                ['How does it work?', 'Pricing plans', 'Installation guide', 'VPS requirements']);
+            addBotMessage("Hey! I'm <strong>Spig</strong>, the Omega Titan AI. I know everything about this system — all 7 engines, installation, pricing, VPS setup, risk management, troubleshooting, you name it. What can I help you with?",
+                ['How does it work?', 'Pricing plans', 'Installation guide', 'What makes it unique?']);
         }, 400);
     }
     if (chatOpen) document.getElementById('chatInput').focus();
