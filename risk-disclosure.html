@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Disclosure — OMEGA TITAN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #05060b;
+            --bg-secondary: #0c0d14;
+            --bg-card: #10111a;
+            --border: #1a1b2e;
+            --text-primary: #e8eaf0;
+            --text-secondary: #8b92a8;
+            --text-muted: #555b73;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #ffb340;
+            --accent-red: #ff4d6a;
+            --gradient-hero: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 40%, #e040fb 100%);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #1e2040; border-radius: 3px; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            padding: 0 2rem; height: 72px;
+            background: rgba(5,6,11,0.92);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-weight: 900; font-size: 0.95rem; letter-spacing: 3px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-back {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+            display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s;
+        }
+        .nav-back:hover { color: var(--text-primary); }
+
+        .legal-container {
+            max-width: 800px; margin: 0 auto;
+            padding: 120px 2rem 80px;
+        }
+        .legal-badge {
+            display: inline-block; padding: 0.35rem 1rem; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 2px;
+            border: 1px solid rgba(255,77,106,0.3); color: var(--accent-red);
+            margin-bottom: 1.5rem; text-transform: uppercase;
+        }
+        .legal-title {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+            letter-spacing: -1.5px; margin-bottom: 0.5rem;
+        }
+        .legal-updated {
+            color: var(--text-muted); font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 3rem;
+        }
+
+        .legal-section { margin-bottom: 3rem; }
+        .legal-section h2 {
+            font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;
+            color: var(--text-primary); padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .legal-section h3 {
+            font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem;
+            color: var(--accent-red);
+        }
+        .legal-section p {
+            color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.92rem;
+        }
+        .legal-section ul, .legal-section ol {
+            color: var(--text-secondary); margin: 0.5rem 0 1rem 1.5rem; font-size: 0.92rem;
+        }
+        .legal-section li { margin-bottom: 0.5rem; }
+        .legal-section strong { color: var(--text-primary); }
+
+        .risk-warning {
+            background: rgba(255,77,106,0.08); border: 1px solid rgba(255,77,106,0.2);
+            border-left: 4px solid var(--accent-red);
+            border-radius: 12px; padding: 1.5rem 1.8rem; margin: 1.5rem 0;
+            font-size: 0.9rem; color: var(--text-secondary);
+        }
+        .risk-warning strong { color: var(--accent-red); }
+
+        .risk-critical {
+            background: rgba(255,77,106,0.12); border: 2px solid rgba(255,77,106,0.3);
+            border-radius: 16px; padding: 2rem; margin: 2rem 0;
+            text-align: center;
+        }
+        .risk-critical h3 {
+            color: var(--accent-red) !important; font-size: 1.1rem !important;
+            margin-bottom: 1rem !important; margin-top: 0 !important;
+        }
+        .risk-critical p { text-align: left; }
+
+        .legal-highlight {
+            background: rgba(255,179,64,0.06); border: 1px solid rgba(255,179,64,0.15);
+            border-radius: 12px; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+            font-size: 0.88rem; color: var(--text-secondary);
+        }
+        .legal-highlight strong { color: var(--accent-amber); }
+
+        footer {
+            border-top: 1px solid var(--border); padding: 3rem 2rem;
+            text-align: center; color: var(--text-muted); font-size: 0.82rem;
+        }
+        .footer-logo {
+            font-weight: 900; font-size: 1rem; letter-spacing: 3px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--text-secondary); }
+
+        @media (max-width: 768px) {
+            .legal-container { padding: 100px 1.5rem 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="nav-logo">OMEGA TITAN</a>
+    <a href="index.html" class="nav-back">&larr; Back to Home</a>
+</nav>
+
+<div class="legal-container">
+    <div class="legal-badge">Risk Warning</div>
+    <h1 class="legal-title">Risk Disclosure Statement</h1>
+    <div class="legal-updated">Last updated: March 6, 2026</div>
+
+    <div class="risk-critical">
+        <h3>HIGH RISK INVESTMENT WARNING</h3>
+        <p>Trading foreign exchange (forex) on margin carries a <strong>high level of risk</strong> and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade forex, you should carefully consider your investment objectives, level of experience, and risk appetite. <strong>The possibility exists that you could sustain a loss of some or all of your initial investment, and therefore you should not invest money that you cannot afford to lose.</strong></p>
+    </div>
+
+    <div class="legal-section">
+        <h2>1. General Risk of Forex Trading</h2>
+        <p>Foreign exchange trading involves the simultaneous buying and selling of currencies. This market operates 24 hours a day, 5 days a week, and is one of the largest and most liquid financial markets in the world. However, this also means it carries significant risks:</p>
+        <ul>
+            <li><strong>Market Risk:</strong> Currency prices can move rapidly in either direction due to economic events, geopolitical developments, central bank decisions, and countless other factors that are impossible to predict with certainty.</li>
+            <li><strong>Leverage Risk:</strong> Forex trading typically involves leverage, meaning you can control a large position with a relatively small amount of capital. While leverage can amplify profits, it equally amplifies losses. You can lose more than your initial deposit.</li>
+            <li><strong>Liquidity Risk:</strong> During periods of extreme market volatility, low liquidity, or around major news events, it may not be possible to execute orders at desired prices, leading to slippage.</li>
+            <li><strong>Gap Risk:</strong> Prices can "gap" over weekends or during periods of extreme volatility, potentially triggering losses beyond your stop-loss levels.</li>
+            <li><strong>Interest Rate Risk:</strong> Changes in interest rates by central banks can cause significant currency movements.</li>
+            <li><strong>Country &amp; Political Risk:</strong> Political instability, economic sanctions, or sudden regulatory changes in any country can dramatically affect currency valuations.</li>
+        </ul>
+    </div>
+
+    <div class="legal-section">
+        <h2>2. Risks Specific to Automated Trading</h2>
+        <p>In addition to the general risks of forex trading, the use of automated trading software such as Omega Titan carries additional specific risks:</p>
+
+        <h3>2.1 Software Risk</h3>
+        <ul>
+            <li>No software is free from bugs or errors. Despite thorough testing, unforeseen issues may cause the Software to behave unexpectedly.</li>
+            <li>Software updates may introduce new bugs or change trading behavior.</li>
+            <li>The Software may not perform as expected in all market conditions, particularly conditions not encountered during backtesting.</li>
+        </ul>
+
+        <h3>2.2 Technology &amp; Infrastructure Risk</h3>
+        <ul>
+            <li><strong>Server failures:</strong> Your VPS or local machine may experience outages, preventing the Software from executing or managing trades.</li>
+            <li><strong>Network disruptions:</strong> Internet connectivity issues between your server and the broker's API can prevent order execution.</li>
+            <li><strong>API failures:</strong> The OANDA API (or any broker API) may experience downtime, rate limiting, or connectivity issues.</li>
+            <li><strong>Power outages:</strong> Hardware failures or power losses can interrupt trading operations.</li>
+            <li><strong>Data feed errors:</strong> Incorrect or delayed price data from the broker can lead to erroneous trading decisions.</li>
+        </ul>
+
+        <h3>2.3 Execution Risk</h3>
+        <ul>
+            <li><strong>Slippage:</strong> Orders may be filled at prices different from the expected price, especially during high volatility.</li>
+            <li><strong>Requotes:</strong> The broker may reject orders and offer different prices.</li>
+            <li><strong>Spread widening:</strong> During news events or low liquidity periods, spreads can widen dramatically, increasing trading costs.</li>
+            <li><strong>Order rejection:</strong> Broker may reject orders due to insufficient margin, account restrictions, or technical issues.</li>
+        </ul>
+
+        <h3>2.4 Over-Optimization Risk</h3>
+        <ul>
+            <li>Trading algorithms can be "over-fitted" to historical data, performing well in backtests but poorly in live trading.</li>
+            <li>Market regimes change over time. Strategies that worked historically may become less effective or unprofitable.</li>
+            <li>There is no guarantee that any algorithm will continue to generate the same results as its backtested performance.</li>
+        </ul>
+    </div>
+
+    <div class="legal-section">
+        <h2>3. Backtested Performance Disclaimer</h2>
+        <div class="risk-warning">
+            <strong>HYPOTHETICAL PERFORMANCE RESULTS HAVE MANY INHERENT LIMITATIONS.</strong> No representation is being made that any account will or is likely to achieve profits or losses similar to those shown in any backtested results.
+        </div>
+        <p>Backtested results presented on our website or in any materials have the following limitations:</p>
+        <ul>
+            <li><strong>Hindsight bias:</strong> Backtests are designed with the benefit of historical data. They reflect what WOULD have happened, not what DID happen in real-time.</li>
+            <li><strong>No emotional factor:</strong> Backtests cannot account for the psychological aspects of trading, including the impact of losses on decision-making.</li>
+            <li><strong>Execution assumptions:</strong> Backtests assume perfect execution at historical prices. Real execution involves slippage, requotes, and partial fills.</li>
+            <li><strong>Spread assumptions:</strong> While our backtests include spread costs, actual spreads vary by time of day, market conditions, and broker.</li>
+            <li><strong>Survivorship bias:</strong> Parameters were selected in part based on which performed well historically. This does not guarantee future performance.</li>
+            <li><strong>Market regime changes:</strong> Historical market conditions may not repeat. Economic events, regulatory changes, and shifts in market structure can fundamentally alter how markets behave.</li>
+            <li><strong>Data quality:</strong> Backtests rely on historical data from OANDA's practice API. This data may contain errors, gaps, or inaccuracies that affect results.</li>
+        </ul>
+        <div class="risk-warning">
+            <strong>PAST PERFORMANCE IS NOT INDICATIVE OF FUTURE RESULTS.</strong> There is no guarantee that any trading strategy, including the strategies employed by Omega Titan, will be profitable. You should expect to experience losses, including periods of sustained drawdown.
+        </div>
+    </div>
+
+    <div class="legal-section">
+        <h2>4. Financial Suitability</h2>
+        <p>Before using Omega Titan or engaging in forex trading, you should honestly assess whether it is appropriate for your financial situation:</p>
+        <ul>
+            <li><strong>Only trade with risk capital:</strong> Use only funds that you can afford to lose entirely without affecting your lifestyle, financial obligations, or well-being.</li>
+            <li><strong>Emergency funds are NOT risk capital:</strong> Never trade with money earmarked for rent, mortgage, bills, education, healthcare, or emergency savings.</li>
+            <li><strong>Understand leverage:</strong> If you do not fully understand how leverage works, do not use leveraged products.</li>
+            <li><strong>Consider professional advice:</strong> If you are unsure whether forex trading is appropriate for you, consult a qualified independent financial advisor before proceeding.</li>
+            <li><strong>Tax implications:</strong> Trading profits may be subject to capital gains tax or other taxes in your jurisdiction. You are responsible for understanding and complying with your local tax obligations.</li>
+        </ul>
+    </div>
+
+    <div class="legal-section">
+        <h2>5. No Guarantees</h2>
+        <p>We make <strong>absolutely no guarantees</strong> regarding:</p>
+        <ul>
+            <li>The profitability of the Software</li>
+            <li>The accuracy of any performance data, including backtested results</li>
+            <li>The suitability of the Software for your specific situation</li>
+            <li>The continued operation of the Software without interruption</li>
+            <li>The reliability of third-party services (brokers, hosting providers, APIs)</li>
+            <li>The Software's ability to adapt to future market conditions</li>
+        </ul>
+        <p>Any statements, materials, or representations made by the Company that describe potential benefits or features of the Software are provided for informational purposes only and should not be construed as promises or guarantees.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>6. Regulatory Notice</h2>
+        <p>Omega Titan is <strong>trading software</strong>. We are not:</p>
+        <ul>
+            <li>A registered investment advisor</li>
+            <li>A registered broker-dealer</li>
+            <li>A commodity trading advisor (CTA)</li>
+            <li>A commodity pool operator (CPO)</li>
+            <li>A financial planner or counselor</li>
+        </ul>
+        <p>We do not manage client accounts, provide personalized investment advice, or make trading recommendations. The Software is a tool that executes trades based on pre-programmed algorithms. You are solely responsible for the decision to use the Software and the configuration of your trading parameters.</p>
+        <p>The availability and legality of forex trading and automated trading software varies by jurisdiction. It is your responsibility to ensure that your use of the Software complies with all applicable laws and regulations in your country of residence.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>7. Third-Party Risk</h2>
+        <p>Omega Titan interfaces with third-party services including but not limited to:</p>
+        <ul>
+            <li><strong>OANDA:</strong> Broker and data provider. We have no affiliation with, endorsement by, or control over OANDA. OANDA's terms, conditions, and execution quality are outside our control.</li>
+            <li><strong>VPS providers:</strong> Server uptime and reliability depend on your hosting provider.</li>
+            <li><strong>Payment processors:</strong> Subscription payment processing is handled by third parties.</li>
+        </ul>
+        <p>We are not responsible for any losses, damages, or disruptions caused by third-party services.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>8. Your Responsibilities</h2>
+        <p>As a user of Omega Titan, you are responsible for:</p>
+        <ul>
+            <li>Understanding and accepting all risks described in this document</li>
+            <li>Configuring appropriate risk parameters for your account size and risk tolerance</li>
+            <li>Monitoring the Software's operation and intervening when necessary</li>
+            <li>Maintaining adequate account balance and margin</li>
+            <li>Keeping your VPS or server running and properly maintained</li>
+            <li>Reviewing and understanding your broker's terms and conditions</li>
+            <li>Complying with all applicable laws and regulations</li>
+            <li>Reporting any issues or unusual behavior to us promptly</li>
+        </ul>
+    </div>
+
+    <div class="risk-critical" style="margin-top:3rem;">
+        <h3>ACKNOWLEDGMENT</h3>
+        <p>By purchasing or using Omega Titan, you confirm that you have read and understood this Risk Disclosure Statement in its entirety, that you understand the risks involved in forex trading and automated trading, and that you accept full responsibility for any and all financial outcomes resulting from your use of the Software. <strong>If you do not understand or do not agree with any part of this Risk Disclosure, do not use the Software.</strong></p>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-logo">OMEGA TITAN</div>
+    <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="risk-disclosure.html">Risk Disclosure</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:contact@omegatitan.io">Contact</a>
+    </div>
+    <p>&copy; 2026 Omega Titan. All rights reserved. Software provided as-is. Not financial advice.</p>
+</footer>
+
+</body>
+</html>

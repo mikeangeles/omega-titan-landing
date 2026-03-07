@@ -795,6 +795,70 @@
         }
         .perf-tab:hover { border-color: var(--accent-blue); color: var(--text-primary); }
 
+        /* ─── Pricing Acknowledgment ─── */
+        .pricing-acknowledge {
+            margin-top: 2.5rem;
+            background: rgba(255,179,64,0.04);
+            border: 1px solid rgba(255,179,64,0.12);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .ack-checkbox-wrap {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            cursor: pointer;
+            position: relative;
+        }
+        .ack-checkbox-wrap input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0; width: 0;
+        }
+        .ack-checkmark {
+            flex-shrink: 0;
+            width: 22px; height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-card);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+            margin-top: 2px;
+        }
+        .ack-checkbox-wrap input:checked ~ .ack-checkmark {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+        .ack-checkbox-wrap input:checked ~ .ack-checkmark::after {
+            content: '\2713';
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .ack-text {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .ack-text a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .ack-text a:hover { color: var(--accent-cyan); text-decoration: underline; }
+
+        /* Disable pricing buttons until acknowledged */
+        .price-btn.disabled {
+            opacity: 0.35;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
         /* ─── Animations ─── */
         .reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.7s ease, transform 0.7s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -1349,6 +1413,21 @@
                 <button class="price-btn price-btn-ghost">Contact Us</button>
             </div>
         </div>
+
+        <!-- Risk Acknowledgment Gate -->
+        <div class="pricing-acknowledge reveal" id="pricingAck">
+            <label class="ack-checkbox-wrap">
+                <input type="checkbox" id="ackCheck" onchange="toggleAck()">
+                <span class="ack-checkmark"></span>
+                <span class="ack-text">
+                    I have read and agree to the
+                    <a href="terms.html" target="_blank">Terms of Service</a>,
+                    <a href="risk-disclosure.html" target="_blank">Risk Disclosure</a>, and
+                    <a href="privacy.html" target="_blank">Privacy Policy</a>.
+                    I understand that forex trading involves substantial risk of loss and that past performance is not indicative of future results.
+                </span>
+            </label>
+        </div>
     </section>
 
     <!-- ─── FAQ ─── -->
@@ -1464,7 +1543,13 @@
             <a href="#faq">FAQ</a>
             <a href="mailto:contact@omegatitan.io">Contact</a>
         </div>
+        <div class="footer-links" style="margin-bottom:1.5rem;">
+            <a href="terms.html">Terms of Service</a>
+            <a href="risk-disclosure.html">Risk Disclosure</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
         <p>&copy; 2026 Omega Titan. All rights reserved. Software provided as-is. Not financial advice.</p>
+        <p style="margin-top:0.5rem;font-size:0.72rem;color:var(--text-muted);">Omega Titan is trading software, not a financial advisory service. We are not a registered investment advisor, broker-dealer, or commodity trading advisor. Past performance is not indicative of future results. Trading forex involves substantial risk of loss.</p>
     </footer>
 
 </div>
@@ -1588,6 +1673,19 @@ window.addEventListener('scroll', () => {
     // Start after hero loads
     setTimeout(addLine, 1200);
 })();
+
+// ── Pricing acknowledgment gate ──
+(function() {
+    // Disable all pricing buttons on load
+    document.querySelectorAll('.price-btn').forEach(btn => btn.classList.add('disabled'));
+})();
+function toggleAck() {
+    const checked = document.getElementById('ackCheck').checked;
+    document.querySelectorAll('.price-btn').forEach(btn => {
+        if (checked) btn.classList.remove('disabled');
+        else btn.classList.add('disabled');
+    });
+}
 
 // ── FAQ toggle ──
 function toggleFaq(el) {

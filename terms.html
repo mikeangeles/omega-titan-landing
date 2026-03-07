@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — OMEGA TITAN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #05060b;
+            --bg-secondary: #0c0d14;
+            --bg-card: #10111a;
+            --border: #1a1b2e;
+            --text-primary: #e8eaf0;
+            --text-secondary: #8b92a8;
+            --text-muted: #555b73;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #ffb340;
+            --gradient-hero: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 40%, #e040fb 100%);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #1e2040; border-radius: 3px; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            padding: 0 2rem; height: 72px;
+            background: rgba(5,6,11,0.92);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-weight: 900; font-size: 0.95rem; letter-spacing: 3px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-back {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+            display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s;
+        }
+        .nav-back:hover { color: var(--text-primary); }
+
+        .legal-container {
+            max-width: 800px; margin: 0 auto;
+            padding: 120px 2rem 80px;
+        }
+        .legal-badge {
+            display: inline-block; padding: 0.35rem 1rem; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 2px;
+            border: 1px solid rgba(59,130,246,0.3); color: var(--accent-blue);
+            margin-bottom: 1.5rem; text-transform: uppercase;
+        }
+        .legal-title {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+            letter-spacing: -1.5px; margin-bottom: 0.5rem;
+        }
+        .legal-updated {
+            color: var(--text-muted); font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 3rem;
+        }
+
+        .legal-section { margin-bottom: 3rem; }
+        .legal-section h2 {
+            font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;
+            color: var(--text-primary); padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .legal-section h3 {
+            font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem;
+            color: var(--accent-blue);
+        }
+        .legal-section p {
+            color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.92rem;
+        }
+        .legal-section ul, .legal-section ol {
+            color: var(--text-secondary); margin: 0.5rem 0 1rem 1.5rem; font-size: 0.92rem;
+        }
+        .legal-section li { margin-bottom: 0.5rem; }
+        .legal-section strong { color: var(--text-primary); }
+
+        .legal-highlight {
+            background: rgba(255,179,64,0.06); border: 1px solid rgba(255,179,64,0.15);
+            border-radius: 12px; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+            font-size: 0.88rem; color: var(--text-secondary);
+        }
+        .legal-highlight strong { color: var(--accent-amber); }
+
+        footer {
+            border-top: 1px solid var(--border); padding: 3rem 2rem;
+            text-align: center; color: var(--text-muted); font-size: 0.82rem;
+        }
+        .footer-logo {
+            font-weight: 900; font-size: 1rem; letter-spacing: 3px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--text-secondary); }
+
+        @media (max-width: 768px) {
+            .legal-container { padding: 100px 1.5rem 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="nav-logo">OMEGA TITAN</a>
+    <a href="index.html" class="nav-back">&larr; Back to Home</a>
+</nav>
+
+<div class="legal-container">
+    <div class="legal-badge">Legal</div>
+    <h1 class="legal-title">Terms of Service</h1>
+    <div class="legal-updated">Last updated: March 6, 2026</div>
+
+    <div class="legal-highlight">
+        <strong>Important:</strong> By purchasing, downloading, installing, or using Omega Titan software ("the Software"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Software.
+    </div>
+
+    <div class="legal-section">
+        <h2>1. Definitions</h2>
+        <ul>
+            <li><strong>"Company," "we," "us," "our"</strong> refers to Omega Titan and its operators.</li>
+            <li><strong>"Software"</strong> refers to the Omega Titan algorithmic trading bot, including all engines, modules, compiled code, configuration files, and documentation.</li>
+            <li><strong>"User," "you," "your"</strong> refers to any individual or entity that purchases, licenses, or uses the Software.</li>
+            <li><strong>"Subscription"</strong> refers to the recurring payment plan under which you access the Software.</li>
+        </ul>
+    </div>
+
+    <div class="legal-section">
+        <h2>2. Nature of the Software</h2>
+        <p>Omega Titan is <strong>autonomous trading software</strong> designed to execute trades on the foreign exchange (forex) market via the OANDA brokerage platform. The Software is a <strong>tool</strong>, not a financial advisory service, investment fund, or managed account.</p>
+        <p><strong>We do not provide financial advice, investment recommendations, or personalized trading strategies.</strong> The Software operates based on pre-configured algorithmic logic. All trading decisions are executed by the Software autonomously based on its programming. You are solely responsible for the decision to use the Software and any trades it executes on your behalf.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>3. License Grant</h2>
+        <h3>3.1 Scope</h3>
+        <p>Upon payment of the applicable subscription fee, we grant you a <strong>non-exclusive, non-transferable, revocable license</strong> to use the Software on a single authorized machine identified by its hardware fingerprint.</p>
+
+        <h3>3.2 Restrictions</h3>
+        <p>You may NOT:</p>
+        <ul>
+            <li>Copy, redistribute, resell, sublicense, or share the Software or any portion thereof</li>
+            <li>Reverse engineer, decompile, disassemble, or attempt to derive the source code</li>
+            <li>Remove, alter, or obscure any proprietary notices, labels, or markings</li>
+            <li>Use the Software on more machines than authorized by your subscription tier</li>
+            <li>Modify, adapt, or create derivative works based on the Software</li>
+            <li>Transfer your license to another person or entity without written consent</li>
+            <li>Use the Software in violation of any applicable laws or regulations</li>
+            <li>Attempt to bypass, disable, or circumvent the license validation, integrity checking, or anti-tampering mechanisms</li>
+        </ul>
+
+        <h3>3.3 Hardware Binding</h3>
+        <p>The Software is locked to specific hardware via a cryptographic hardware fingerprint. If you change your server or VPS, you must request a new license key. We reserve the right to limit the number of hardware migrations.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>4. Subscription &amp; Payment</h2>
+        <h3>4.1 Billing</h3>
+        <p>Subscriptions are billed monthly in advance. Your subscription automatically renews each billing cycle unless cancelled before the renewal date.</p>
+
+        <h3>4.2 Price Changes</h3>
+        <p>We reserve the right to change subscription prices with 30 days' written notice. Existing subscribers will be grandfathered at their current rate for 90 days following any price increase.</p>
+
+        <h3>4.3 Refund Policy</h3>
+        <p>Due to the nature of digital software delivery:</p>
+        <ul>
+            <li><strong>14-day trial period:</strong> If you are on a trial, you may cancel at any time with no charge.</li>
+            <li><strong>First 7 days of paid subscription:</strong> Full refund available if the Software has not executed any live trades on your account.</li>
+            <li><strong>After 7 days or after live trades executed:</strong> No refunds. You may cancel your subscription to prevent future billing, but the current billing period is non-refundable.</li>
+        </ul>
+
+        <h3>4.4 Cancellation</h3>
+        <p>You may cancel your subscription at any time by contacting us at contact@omegatitan.io. Upon cancellation, your license will remain active until the end of your current billing period, after which the Software will cease to function.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>5. Risk Acknowledgment</h2>
+        <div class="legal-highlight">
+            <strong>CRITICAL:</strong> Forex trading carries a high level of risk and may not be suitable for all investors. You could sustain a loss of some or all of your investment. You should not invest money that you cannot afford to lose. By using the Software, you acknowledge that you understand these risks and accept full responsibility for any financial outcomes.
+        </div>
+        <p>Specifically, you acknowledge and agree that:</p>
+        <ul>
+            <li>Past performance, including backtested results, is <strong>not indicative of future results</strong></li>
+            <li>The Software may generate losses, including losses that exceed your initial deposit if using leveraged trading</li>
+            <li>Market conditions can change rapidly and unpredictably, and no algorithm can guarantee profits</li>
+            <li>Backtested results have inherent limitations and do not account for all real-world market conditions</li>
+            <li>Technical failures, including but not limited to server outages, API disruptions, network issues, and broker execution delays, may result in unintended trades or missed opportunities</li>
+            <li>You are solely responsible for configuring your risk parameters, account leverage, and position sizing</li>
+            <li>We do not monitor, manage, or have access to your trading account</li>
+        </ul>
+    </div>
+
+    <div class="legal-section">
+        <h2>6. Disclaimer of Warranties</h2>
+        <p>THE SOFTWARE IS PROVIDED <strong>"AS IS" AND "AS AVAILABLE"</strong> WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO:</p>
+        <ul>
+            <li>WARRANTIES OF MERCHANTABILITY</li>
+            <li>FITNESS FOR A PARTICULAR PURPOSE</li>
+            <li>NON-INFRINGEMENT</li>
+            <li>ACCURACY, RELIABILITY, OR COMPLETENESS OF RESULTS</li>
+            <li>UNINTERRUPTED OR ERROR-FREE OPERATION</li>
+        </ul>
+        <p>We do not warrant that the Software will meet your expectations, generate profits, or operate without interruption. We do not guarantee any specific trading results or financial outcomes.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>7. Limitation of Liability</h2>
+        <div class="legal-highlight">
+            <strong>Maximum Liability:</strong> In no event shall our total liability to you exceed the amount you paid for the Software in the <strong>three (3) months</strong> preceding the event giving rise to the claim.
+        </div>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WE SHALL NOT BE LIABLE FOR:</p>
+        <ul>
+            <li>Any trading losses, lost profits, or financial damages of any kind</li>
+            <li>Any indirect, incidental, special, consequential, or punitive damages</li>
+            <li>Loss of data, revenue, business opportunities, or goodwill</li>
+            <li>Damages arising from unauthorized access to or use of the Software</li>
+            <li>Damages arising from any bugs, errors, or inaccuracies in the Software</li>
+            <li>Damages arising from broker execution, slippage, spread widening, or liquidity issues</li>
+            <li>Damages arising from server downtime, network outages, or API failures</li>
+            <li>Any action or inaction taken by the Software, including trades executed or not executed</li>
+        </ul>
+        <p>This limitation applies regardless of the legal theory (contract, tort, negligence, strict liability, or otherwise) and even if we have been advised of the possibility of such damages.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>8. Indemnification</h2>
+        <p>You agree to indemnify, defend, and hold harmless the Company, its officers, directors, employees, agents, and affiliates from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to:</p>
+        <ul>
+            <li>Your use of the Software</li>
+            <li>Any trades executed by the Software on your account</li>
+            <li>Your violation of these Terms</li>
+            <li>Your violation of any applicable laws or regulations</li>
+            <li>Any misrepresentation made by you</li>
+        </ul>
+    </div>
+
+    <div class="legal-section">
+        <h2>9. Intellectual Property</h2>
+        <p>The Software, including all source code, compiled bytecode, algorithms, trading logic, parameter configurations, documentation, trademarks, and trade secrets, is the <strong>exclusive intellectual property</strong> of the Company. Your license grants usage rights only; no ownership or intellectual property rights are transferred to you.</p>
+        <p>The Software incorporates proprietary algorithmic systems including but not limited to: permutation entropy analysis, GARCH volatility modeling, swarm intelligence consensus, seismic wave propagation, computational immunology, and Bayesian ensemble weighting. These systems and their implementations are trade secrets protected under applicable law.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>10. Termination</h2>
+        <p>We may terminate or suspend your license immediately, without prior notice, if:</p>
+        <ul>
+            <li>You breach any provision of these Terms</li>
+            <li>You attempt to reverse engineer, decompile, or tamper with the Software</li>
+            <li>You share, redistribute, or resell the Software</li>
+            <li>You fail to pay subscription fees</li>
+            <li>We determine, in our sole discretion, that continued use poses a risk to our business</li>
+        </ul>
+        <p>Upon termination, your right to use the Software ceases immediately. No refund will be issued for termination due to violation of these Terms.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>11. Governing Law &amp; Dispute Resolution</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the <strong>State of California, United States</strong>, without regard to conflict of law principles.</p>
+        <p>Any disputes arising under or in connection with these Terms shall first be attempted to be resolved through good-faith negotiation. If negotiation fails, disputes shall be resolved through <strong>binding arbitration</strong> administered by the American Arbitration Association (AAA) under its Commercial Arbitration Rules. The arbitration shall take place in California, and the arbitrator's decision shall be final and binding.</p>
+        <p><strong>CLASS ACTION WAIVER:</strong> You agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated, or representative action.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>12. Modifications to Terms</h2>
+        <p>We reserve the right to modify these Terms at any time. Changes will be effective upon posting to our website. Continued use of the Software after changes are posted constitutes acceptance of the modified Terms. We will make reasonable efforts to notify active subscribers of material changes via email.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>13. Severability</h2>
+        <p>If any provision of these Terms is held to be invalid, illegal, or unenforceable, the remaining provisions shall continue in full force and effect. The invalid provision shall be modified to the minimum extent necessary to make it valid and enforceable.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>14. Entire Agreement</h2>
+        <p>These Terms, together with the Risk Disclosure and Privacy Policy, constitute the entire agreement between you and the Company regarding the use of the Software. These Terms supersede all prior agreements, communications, and understandings, whether written or oral.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>15. Contact</h2>
+        <p>For questions about these Terms of Service, contact us at:</p>
+        <p><strong>Email:</strong> contact@omegatitan.io</p>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-logo">OMEGA TITAN</div>
+    <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="risk-disclosure.html">Risk Disclosure</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:contact@omegatitan.io">Contact</a>
+    </div>
+    <p>&copy; 2026 Omega Titan. All rights reserved. Software provided as-is. Not financial advice.</p>
+</footer>
+
+</body>
+</html>
